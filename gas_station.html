@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gas Station</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f4f4;margin:0;padding:30px;color:#222}
+.container{max-width:900px;margin:auto;background:#fff;padding:25px;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+h1{margin-top:0}
+label{display:block;font-weight:bold;margin:18px 0 7px}
+textarea,input{box-sizing:border-box;width:100%;padding:10px;border:1px solid #ccc;border-radius:5px;font:inherit}
+textarea{min-height:220px;resize:vertical}
+input{height:42px}
+button{margin-top:18px;padding:11px 20px;border:0;border-radius:5px;background:#1677d2;color:#fff;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.55;cursor:not-allowed}
+#status{margin-top:25px;background:#f7f7f7;border:1px solid #ddd;border-radius:5px;padding:15px;white-space:pre-wrap;font-family:monospace;min-height:160px}
+.ok{color:#16803c}.fail{color:#b42318}.info{color:#555}
+.small{font-size:13px;color:#666}
+</style>
+
+<!-- Put ethers.umd.min.js in the js/ folder beside this HTML file. -->
+<script src="js/ethers.min.js"></script>
+<link rel="icon" type="image/png" href="./images/favicon.svg">
+</head>
+<body>
+<div class="container">
+<h1>Gas Station</h1>
+<p class="small">Standalone gas-top-up processor. Nothing is submitted until you click Process Request.</p>
+
+<label for="email">Permit Email</label>
+<textarea id="email" placeholder="Paste the complete gas-top-up email here..."></textarea>
+
+<label for="privateKey">Gas Station Private Key</label>
+<input id="privateKey" type="password" placeholder="0x...">
+
+<button id="process" type="button">Process Request</button>
+
+<div id="status" class="info">Ready.</div>
+</div>
+
+<script>
+/* ============================================================
+   PARAMETERS
+   ============================================================ */
+
+const PARAMS = {
+
+    rpc: "https://data-seed-prebsc-1-s1.bnbchain.org:8545",
+
+    chainId: 97,
+
+    contract: "0x843d99e1F5c5b2D436F222e3Aed30D6bCa0A8898",
+	
+	claimContract: "0x8ce883A4dD93AE05C2D57877131b8e841F77bECE",
+
+    decimals: 18,
+
+    gasStation: "0xb43aAB41f9e97cA3ce6732a2D19946E7176Ff879",
+
+    gasTopUp: 0.00025,
+
+    gasTopUpFee: 1000,
+
+    permitName: "TestCash",
+
+    permitVersion: 1,
+
+    claimsFile: "./js/claims.json",
+
+    coin: "SWIFT",
+
+    explorer: "https://testnet.bscscan.com/"
+};
+
+/*
+ * Optional convenience for your own private local copy.
+ *
+ * IMPORTANT:
+ * Do not put a real private key in a copy that you distribute.
+ */
+const DEFAULT_PRIVATE_KEY = "";
+
+
+/* ============================================================
+   ABI
+   ============================================================ */
+
+const TOKEN_ABI = [
+    "function balanceOf(address) view returns (uint256)",
+    "function nonces(address) view returns (uint256)",
+    "function permit(address owner,address spender,uint256 value,uint256 deadline,uint8 v,bytes32 r,bytes32 s)",
+    "function transferFrom(address from,address to,uint256 value) returns (bool)"
+];
+
+const CLAIM_ABI = [
+    "function claimNative(uint256 index,uint256 amount,bytes compressedPublicKey,uint256 unlockTimestamp,bytes32[] proof)"
+];
+
+
+/* ============================================================
+   UI
+   ============================================================ */
+
+const statusBox = document.getElementById("status");
+const processButton = document.getElementById("process");
+const privateKeyBox = document.getElementById("privateKey");
+
+if (DEFAULT_PRIVATE_KEY) {
+    privateKeyBox.value = DEFAULT_PRIVATE_KEY;
+}
+
+function log(message, type) {
+
+    const line = document.createElement("div");
+
+    line.textContent = message;
+
+    if (type === "ok") {
+        line.className = "ok";
+    } else if (type === "fail") {
+        line.className = "fail";
+    } else {
+        line.className = "info";
+    }
+
+    statusBox.appendChild(line);
+}
+
+function clearLog() {
+    statusBox.innerHTML = "";
+}
+
+function fail(message) {
+    log("✗ " + message, "fail");
+    throw new Error(message);
+}
+
+function success(message) {
+    log("✓ " + message, "ok");
+}
+
+
+/* ============================================================
+   EMAIL PARSING
+   ============================================================ */
+
+function parseEmail(text) {
+
+	function getField(name) {
+		const regex = new RegExp(
+			"^" + name + "\\s*:\\s*(.+)$",
+			"im"
+		);
+		const match = text.match(regex);
+		return match
+			? match[1].replace(/[\u200B-\u200D\uFEFF]/g, "").trim()
+			: null;
+	}
+
+    const gasTopUpMatch = text.match(
+        /Gas top-up:\s*([0-9]+(?:\.[0-9]+)?)\s*BNB/i
+    );
+
+    const gasFeeMatch = text.match(
+        /Gas top-up fee:\s*([0-9]+(?:\.[0-9]+)?)\s+([A-Za-z0-9_-]+)/i
+    );
+
+    const permit = {
+        owner: getField("Owner"),
+        spender: getField("Spender"),
+        value: getField("Value"),
+        nonce: getField("Nonce"),
+        deadline: getField("Deadline"),
+        v: getField("v"),
+        r: getField("r"),
+        s: getField("s")
+    };
+
+    if (!gasTopUpMatch) {
+        throw new Error("Could not find the gas top-up amount in the email.");
+    }
+
+    if (!gasFeeMatch) {
+        throw new Error("Could not find the gas top-up fee in the email.");
+    }
+
+    permit.requestedGasTopUp = gasTopUpMatch[1];
+    permit.requestedGasFee = gasFeeMatch[1];
+    permit.requestedCoin = gasFeeMatch[2];
+
+    for (const key of [
+        "owner",
+        "spender",
+        "value",
+        "nonce",
+        "deadline",
+        "v",
+        "r",
+        "s"
+    ]) {
+        if (!permit[key]) {
+            throw new Error("Missing permit field: " + key);
+        }
+    }
+
+    return permit;
+}
+
+
+/* ============================================================
+   VALIDATION
+   ============================================================ */
+
+function sameAddress(a, b) {
+    return a.toLowerCase() === b.toLowerCase();
+}
+
+function validateRequest(permit) {
+
+    if (!ethers.isAddress(permit.owner)) {
+        throw new Error("Invalid owner address.");
+    }
+
+    if (!ethers.isAddress(permit.spender)) {
+        throw new Error("Invalid spender address.");
+    }
+
+    if (!sameAddress(permit.spender, PARAMS.gasStation)) {
+        throw new Error("Permit spender does not match the configured gas station.");
+    }
+
+    if (permit.requestedCoin !== PARAMS.coin) {
+        /*
+         * Change this to PARAMS.coin if you later add a coin parameter.
+         * This is deliberately explicit for the first test version.
+         */
+        throw new Error(
+            "Unexpected token in email: " + permit.requestedCoin
+        );
+    }
+
+    if (
+        permit.requestedGasTopUp !==
+        PARAMS.gasTopUp.toString()
+    ) {
+        throw new Error("Requested BNB amount does not match server parameters.");
+    }
+
+    if (
+        permit.requestedGasFee !== PARAMS.gasTopUpFee.toString()
+    ) {
+        throw new Error("Requested token fee does not match server parameters.");
+    }
+
+    const expectedFee = ethers.parseUnits(
+        PARAMS.gasTopUpFee.toString(),
+        PARAMS.decimals
+    );
+
+    if (BigInt(permit.value) !== expectedFee) {
+        throw new Error("Permit value does not match the configured gas-top-up fee.");
+    }
+
+    const now = Math.floor(Date.now() / 1000);
+
+    if (BigInt(permit.deadline) < BigInt(now)) {
+        throw new Error("Permit has expired.");
+    }
+
+    if (![27, 28].includes(Number(permit.v))) {
+        throw new Error("Invalid permit v value.");
+    }
+
+    if (!/^0x[0-9a-fA-F]{64}$/.test(permit.r)) {
+        throw new Error("Invalid permit r value.");
+    }
+
+    if (!/^0x[0-9a-fA-F]{64}$/.test(permit.s)) {
+        throw new Error("Invalid permit s value.");
+    }
+
+    return expectedFee;
+}
+
+
+/* ============================================================
+   EIP-712 SIGNATURE VERIFICATION / PUBLIC KEY RECOVERY
+   ============================================================ */
+
+function getPermitData(permit) {
+
+    const domain = {
+        name: PARAMS.permitName.toString(),
+        version: PARAMS.permitVersion.toString(),
+        chainId: PARAMS.chainId,
+        verifyingContract: PARAMS.contract
+    };
+
+    const types = {
+        Permit: [
+            { name: "owner", type: "address" },
+            { name: "spender", type: "address" },
+            { name: "value", type: "uint256" },
+            { name: "nonce", type: "uint256" },
+            { name: "deadline", type: "uint256" }
+        ]
+    };
+
+    const value = {
+        owner: permit.owner,
+        spender: permit.spender,
+        value: BigInt(permit.value),
+        nonce: BigInt(permit.nonce),
+        deadline: BigInt(permit.deadline)
+    };
+
+    return { domain, types, value };
+}
+
+async function verifyAndRecoverPublicKey(permit) {
+
+    const data = getPermitData(permit);
+
+    const signature = ethers.Signature.from({
+        r: permit.r,
+        s: permit.s,
+        v: Number(permit.v)
+    });
+
+    const digest = ethers.TypedDataEncoder.hash(
+        data.domain,
+        data.types,
+        data.value
+    );
+
+    const recoveredPublicKey =
+        ethers.SigningKey.recoverPublicKey(
+            digest,
+            signature
+        );
+
+    const compressedPublicKey =
+        ethers.SigningKey.computePublicKey(
+            recoveredPublicKey,
+            true
+        );
+
+    const recoveredAddress =
+        ethers.computeAddress(compressedPublicKey);
+
+    if (!sameAddress(recoveredAddress, permit.owner)) {
+        throw new Error(
+            "Permit signature does not belong to the stated owner."
+        );
+    }
+
+    return {
+        digest,
+        recoveredAddress,
+        compressedPublicKey
+    };
+}
+
+
+/* ============================================================
+   HASH160
+   ============================================================ */
+
+/*
+ * Small RIPEMD-160 implementation.
+ * Input/output are byte arrays / hex strings.
+ */
+
+function ripemd160(bytes) {
+
+    function rol(x, n) {
+        return ((x << n) | (x >>> (32 - n))) >>> 0;
+    }
+
+    const r1 = [
+        0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,
+        7,4,13,1,10,6,15,3,12,0,9,5,2,14,11,8,
+        3,10,14,4,9,15,8,1,2,7,0,6,13,11,5,12,
+        1,9,11,10,0,8,12,4,13,3,7,15,14,5,6,2,
+        4,0,5,9,7,12,2,10,14,1,3,8,11,6,15,13
+    ];
+
+    const r2 = [
+        5,14,7,0,9,2,11,4,13,6,15,8,1,10,3,12,
+        6,11,3,7,0,13,5,10,14,15,8,12,4,9,1,2,
+        15,5,1,3,7,14,6,9,11,8,12,2,10,0,4,13,
+        8,6,4,1,3,11,15,0,5,12,2,13,9,7,10,14,
+        12,15,10,4,1,5,8,7,6,2,13,14,0,3,9,11
+    ];
+
+    const s1 = [
+        11,14,15,12,5,8,7,9,11,13,14,15,6,7,9,8,
+        7,6,8,13,11,9,7,15,7,12,15,9,11,7,13,12,
+        11,13,6,7,14,9,13,15,14,8,13,6,5,12,7,5,
+        11,12,14,15,14,15,9,8,9,14,5,6,8,6,5,12,
+        9,15,5,11,6,8,13,12,5,12,13,14,11,8,5,6
+    ];
+
+    const s2 = [
+        8,9,9,11,13,15,15,5,7,7,8,11,14,14,12,6,
+        9,13,15,7,12,8,9,11,7,7,12,7,6,15,13,11,
+        9,7,15,11,8,6,6,14,12,13,5,14,13,13,7,5,
+        15,5,8,11,14,14,6,14,6,9,12,9,12,5,15,8,
+        8,5,12,9,12,5,14,6,8,13,6,5,15,13,11,11
+    ];
+
+    function f(j, x, y, z) {
+        if (j <= 15) return x ^ y ^ z;
+        if (j <= 31) return (x & y) | (~x & z);
+        if (j <= 47) return (x | ~y) ^ z;
+        if (j <= 63) return (x & z) | (y & ~z);
+        return x ^ (y | ~z);
+    }
+
+    const K1 = [
+        0x00000000,0x5A827999,0x6ED9EBA1,
+        0x8F1BBCDC,0xA953FD4E
+    ];
+
+    const K2 = [
+        0x50A28BE6,0x5C4DD124,0x6D703EF3,
+        0x7A6D76E9,0x00000000
+    ];
+
+    const k = new Uint8Array(bytes);
+    const bitLength = k.length * 8;
+    const paddedLength =
+        ((k.length + 9 + 63) >> 6) << 6;
+
+    const msg = new Uint8Array(paddedLength);
+
+    msg.set(k);
+    msg[k.length] = 0x80;
+
+    for (let i = 0; i < 8; i++) {
+        msg[msg.length - 8 + i] =
+            (bitLength / Math.pow(2, 8 * i)) & 0xff;
+    }
+
+    let h0 = 0x67452301;
+    let h1 = 0xEFCDAB89;
+    let h2 = 0x98BADCFE;
+    let h3 = 0x10325476;
+    let h4 = 0xC3D2E1F0;
+
+    for (let offset = 0; offset < msg.length; offset += 64) {
+
+        const X = new Uint32Array(16);
+
+        for (let i = 0; i < 16; i++) {
+            X[i] =
+                msg[offset + i*4] |
+                (msg[offset + i*4 + 1] << 8) |
+                (msg[offset + i*4 + 2] << 16) |
+                (msg[offset + i*4 + 3] << 24);
+        }
+
+        let A = h0, B = h1, C = h2, D = h3, E = h4;
+        let Ap = h0, Bp = h1, Cp = h2, Dp = h3, Ep = h4;
+
+        for (let j = 0; j < 80; j++) {
+
+            const round = Math.floor(j / 16);
+
+            let T = (
+                rol(
+                    (
+                        A +
+                        f(j, B, C, D) +
+                        X[r1[j]] +
+                        K1[round]
+                    ) >>> 0,
+                    s1[j]
+                ) + E
+            ) >>> 0;
+
+            A = E;
+            E = D;
+            D = rol(C, 10);
+            C = B;
+            B = T;
+
+            T = (
+                rol(
+                    (
+                        Ap +
+                        f(79-j, Bp, Cp, Dp) +
+                        X[r2[j]] +
+                        K2[round]
+                    ) >>> 0,
+                    s2[j]
+                ) + Ep
+            ) >>> 0;
+
+            Ap = Ep;
+            Ep = Dp;
+            Dp = rol(Cp, 10);
+            Cp = Bp;
+            Bp = T;
+        }
+
+        const T = (h1 + C + Dp) >>> 0;
+
+        h1 = (h2 + D + Ep) >>> 0;
+        h2 = (h3 + E + Ap) >>> 0;
+        h3 = (h4 + A + Bp) >>> 0;
+        h4 = (h0 + B + Cp) >>> 0;
+        h0 = T;
+    }
+
+    const out = new Uint8Array(20);
+    const words = [h0,h1,h2,h3,h4];
+
+    for (let i = 0; i < 5; i++) {
+        out[i*4]     = words[i] & 255;
+        out[i*4 + 1] = (words[i] >>> 8) & 255;
+        out[i*4 + 2] = (words[i] >>> 16) & 255;
+        out[i*4 + 3] = (words[i] >>> 24) & 255;
+    }
+
+    return out;
+}
+
+function sha256(bytes) {
+
+    /*
+     * ethers exposes SHA-256, so use it rather than another
+     * cryptographic implementation.
+     */
+    const hex = ethers.sha256(bytes);
+    return ethers.getBytes(hex);
+}
+
+function hash160(compressedPublicKey) {
+
+    const sha = sha256(compressedPublicKey);
+    const ripe = ripemd160(sha);
+
+    return "0x" +
+        Array.from(ripe)
+            .map(b => b.toString(16).padStart(2, "0"))
+            .join("");
+}
+
+
+/* ============================================================
+   CLAIMS
+   ============================================================ */
+
+async function loadClaims() {
+
+    const response = await fetch(PARAMS.claimsFile);
+
+    if (!response.ok) {
+        throw new Error(
+            "Could not load " + PARAMS.claimsFile
+        );
+    }
+
+    return await response.json();
+}
+
+function findClaims(claimsData, pubkeyHash) {
+
+    const results = [];
+
+    for (const [index, claim] of Object.entries(claimsData)) {
+
+        if (
+            claim.pubkeyHash.toLowerCase() ===
+            pubkeyHash.toLowerCase()
+        ) {
+            results.push({
+                index: index,
+                address: claim.address,
+                pubkeyHash: claim.pubkeyHash,
+                amount: BigInt(claim.amount),
+                redeemableDate: claim.redeemableDate,
+                unlockTimestamp: BigInt(claim.unlockTimestamp),
+                proof: claim.proof
+            });
+        }
+    }
+
+    return results;
+}
+
+function selectClaims(claims, requiredAmount) {
+
+    /*
+     * Use the smallest number of claims needed.
+     * We deliberately do not submit anything here.
+     */
+    const sorted = [...claims].sort(
+        (a, b) =>
+            a.amount > b.amount ? -1 :
+            a.amount < b.amount ? 1 : 0
+    );
+
+    const selected = [];
+    let total = 0n;
+
+    for (const claim of sorted) {
+
+        selected.push(claim);
+        total += claim.amount;
+
+        if (total >= requiredAmount) {
+            break;
+        }
+    }
+
+    if (total < requiredAmount) {
+        return null;
+    }
+
+    return {
+        claims: selected,
+        total: total
+    };
+}
+
+
+/* ============================================================
+   MAIN WORKFLOW
+   ============================================================ */
+
+async function processRequest() {
+
+    clearLog();
+    processButton.disabled = true;
+
+    try {
+
+        if (typeof ethers === "undefined") {
+            fail("ethers.js was not loaded.");
+        }
+
+        const privateKey =
+            privateKeyBox.value.trim();
+
+        if (!privateKey) {
+            fail("Please enter the gas station private key.");
+        }
+
+        const email =
+            document.getElementById("email").value.trim();
+
+        if (!email) {
+            fail("Please paste the permit email.");
+        }
+
+        log("Parsing email...");
+        const permit = parseEmail(email);
+        success("Email parsed.");
+
+        log("Validating request...");
+        const requiredFee =
+            validateRequest(permit);
+        success("Request parameters validated.");
+
+        const provider =
+            new ethers.JsonRpcProvider(
+                PARAMS.rpc,
+                PARAMS.chainId
+            );
+
+        const network =
+            await provider.getNetwork();
+
+        if (
+            network.chainId !==
+            BigInt(PARAMS.chainId)
+        ) {
+            fail("RPC node is on the wrong network.");
+        }
+
+        const gasStationWallet =
+            new ethers.Wallet(
+                privateKey,
+                provider
+            );
+
+        if (
+            !sameAddress(
+                gasStationWallet.address,
+                PARAMS.gasStation
+            )
+        ) {
+            fail(
+                "Private key does not belong to the configured gas station."
+            );
+        }
+
+        success("Gas station wallet verified.");
+
+        const token =
+            new ethers.Contract(
+                PARAMS.contract,
+                TOKEN_ABI,
+                provider
+            );
+
+        const owner = permit.owner;
+
+        log("Checking current token balance...");
+
+        let balance =
+            await token.balanceOf(owner);
+
+        log(
+            "Current balance: " +
+            ethers.formatUnits(
+                balance,
+                PARAMS.decimals
+            ) +
+            " tokens"
+        );
+
+        /*
+         * If the user already has enough tokens,
+         * no claim is needed.
+         */
+        if (balance < requiredFee) {
+
+            log("Balance is below the required fee.");
+
+            log("Recovering public key from permit...");
+
+            const recovered =
+                await verifyAndRecoverPublicKey(
+                    permit
+                );
+
+            success("Permit signature verified.");
+
+            log(
+                "Recovered public key: " +
+                recovered.compressedPublicKey
+            );
+
+            const pubkeyHash =
+                hash160(
+                    recovered.compressedPublicKey
+                );
+
+            log(
+                "HASH160: " +
+                pubkeyHash
+            );
+
+            log("Loading claims file...");
+
+            const claimsData =
+                await loadClaims();
+
+            success("Claims file loaded.");
+
+            const claims =
+                findClaims(
+                    claimsData,
+                    pubkeyHash
+                );
+
+            log(
+                "Matching claims found: " +
+                claims.length
+            );
+
+            if (claims.length === 0) {
+                fail(
+                    "No available claim was found. No claim was submitted."
+                );
+            }
+
+            const selected =
+                selectClaims(
+                    claims,
+                    requiredFee - balance
+                );
+
+            if (!selected) {
+                fail(
+                    "The current balance plus available claims is insufficient. No claim was submitted."
+                );
+            }
+
+            let claimTotal = 0n;
+
+            for (const claim of selected.claims) {
+                claimTotal += claim.amount;
+            }
+
+            log(
+                "Selected claim amount: " +
+                ethers.formatUnits(
+                    claimTotal,
+                    PARAMS.decimals
+                )
+            );
+
+            log(
+                "Balance after claiming would be approximately: " +
+                ethers.formatUnits(
+                    balance + claimTotal,
+                    PARAMS.decimals
+                )
+            );
+
+            /*
+             * Do not claim unless the resulting balance is
+             * definitely sufficient.
+             */
+            if (
+                balance + claimTotal <
+                requiredFee
+            ) {
+                fail(
+                    "Available claims cannot bring the balance high enough. No claim was submitted."
+                );
+            }
+
+            const claimContract =
+                new ethers.Contract(
+                    PARAMS.claimContract,
+                    CLAIM_ABI,
+                    gasStationWallet
+                );
+
+            /*
+             * IMPORTANT:
+             * This first version assumes the gas station is
+             * also the authorized transaction sender for
+             * claimNative().
+             *
+             * If your actual claim contract requires the
+             * claimant to be msg.sender, this part must be
+             * changed to the actual claim-submission model.
+             */
+            for (const claim of selected.claims) {
+
+                log(
+                    "Submitting claim " +
+                    claim.index +
+                    "..."
+                );
+
+                const tx =
+                    await claimContract.claimNative(
+                        claim.index,
+                        claim.amount,
+                        recovered.compressedPublicKey,
+                        claim.unlockTimestamp,
+                        claim.proof
+                    );
+
+                log(
+                    "Claim transaction: " +
+                    tx.hash
+                );
+
+                await tx.wait();
+
+                success(
+                    "Claim " +
+                    claim.index +
+                    " confirmed."
+                );
+            }
+
+            log("Checking token balance again...");
+
+            balance =
+                await token.balanceOf(owner);
+
+            log(
+                "New balance: " +
+                ethers.formatUnits(
+                    balance,
+                    PARAMS.decimals
+                )
+            );
+
+            if (balance < requiredFee) {
+                fail(
+                    "Balance is still below the required fee after claiming."
+                );
+            }
+
+            success("Required token balance obtained.");
+        } else {
+            success("Existing token balance covers the fee.");
+        }
+
+        /*
+         * At this point the user has enough tokens.
+         */
+        log("Checking permit nonce...");
+
+        const currentNonce =
+            await token.nonces(owner);
+
+        if (
+            BigInt(permit.nonce) !==
+            currentNonce
+        ) {
+            fail(
+                "Permit nonce is no longer current."
+            );
+        }
+
+        success("Permit nonce verified.");
+
+        log("Submitting permit...");
+
+        const permitContract =
+            new ethers.Contract(
+                PARAMS.contract,
+                TOKEN_ABI,
+                gasStationWallet
+            );
+
+        const permitTx =
+            await permitContract.permit(
+                permit.owner,
+                permit.spender,
+                BigInt(permit.value),
+                BigInt(permit.deadline),
+                Number(permit.v),
+                permit.r,
+                permit.s
+            );
+
+        log(
+            "Permit transaction: " +
+            permitTx.hash
+        );
+
+        await permitTx.wait();
+
+        success("Permit confirmed.");
+
+        log("Taking token fee...");
+
+        const transferTx =
+            await permitContract.transferFrom(
+                owner,
+                gasStationWallet.address,
+                requiredFee
+            );
+
+        log(
+            "Token transfer transaction: " +
+            transferTx.hash
+        );
+
+        await transferTx.wait();
+
+        success("Token fee received.");
+
+        log("Sending BNB...");
+
+        const bnbAmount =
+            ethers.parseEther(
+                PARAMS.gasTopUp.toString()
+            );
+
+        const bnbTx =
+            await gasStationWallet.sendTransaction({
+                to: owner,
+                value: bnbAmount
+            });
+
+        log(
+            "BNB transaction: " +
+            bnbTx.hash
+        );
+
+        await bnbTx.wait();
+
+        success("BNB transfer confirmed.");
+
+        log("");
+        success("REQUEST COMPLETED");
+
+        log(
+            "BNB sent: " +
+            PARAMS.gasTopUp +
+            " BNB"
+        );
+
+        log(
+            "Token fee: " +
+            PARAMS.gasTopUpFee
+        );
+
+        log(
+            "Recipient: " +
+            owner
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+        if (
+            !error.message.startsWith("✗")
+        ) {
+            log(
+                "✗ " +
+                (
+                    error.reason ||
+                    error.shortMessage ||
+                    error.message ||
+                    "Unknown error"
+                ),
+                "fail"
+            );
+        }
+
+    } finally {
+
+        processButton.disabled = false;
+    }
+}
+
+processButton.addEventListener(
+    "click",
+    processRequest
+);
+</script>
+</body>
+</html>
