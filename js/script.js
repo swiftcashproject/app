@@ -635,19 +635,19 @@ function sendBNB() {
    }
 
    Swal.fire({
-      background: "#f0f0f0",
+      background: "#ffffff",
       title: "Send BNB",
       iconHtml: '<img src="images/bnb.png" style="width:45px; height:45px;" alt="BNB">',
-      html: '<input id="bnb-recipient" class="form-control input-lg swal-spend" ' +
-         'placeholder="BNB Address" style="width:100%; margin-bottom:10px;">' +
+      html: '<input id="bnb-recipient" class="swal2-input" ' +
+         'placeholder="BNB Address" style="width:calc(100% - 6px); margin: 10 3 3;">' +
 
          '<div style="display:flex; align-items:center; gap:5px;">' +
 
-         '<input id="bnb-amount" class="form-control input-lg swal-spend" ' +
-         'placeholder="Amount of BNB" type="number" ' +
-         'step="any" style="width:100%;">' +
+         '<input id="bnb-amount" class="swal2-input" ' +
+         'placeholder="Amount of BNB" type="text" ' +
+         'step="any" style="width:100%; margin: 10 3 3;">' +
 
-         '<button class="btn" type="button" id="bnb-max">' +
+         '<button class="btn" style="margin: 10 3 3; background: #fff" type="button" id="bnb-max">' +
          '<i class="fa fa-broom-ball" ' +
          'style="height:29px; width:29px; font-size:30px;"></i>' +
          '</button>' +
@@ -1476,10 +1476,7 @@ function switchCoinNow(whichCoin) {
    $("#address").attr("placeholder", whichCoin + " address");
 
    if (whichCoin == "SWIFT") {
-      $("#mainD").show();
-      $("#mainW").show();
-      $("#mainH").show();
-      $("#mainC").show();
+      $('#mainD, #mainW, #mainH, #mainC').removeAttr('disabled');
 
       $("#buy-gas").show();
       $("#metamask").show();
@@ -1489,10 +1486,7 @@ function switchCoinNow(whichCoin) {
       $("#divBNBBalance").css("display", "block");
 
    } else {
-      $("#mainD").hide();
-      $("#mainW").hide();
-      $("#mainH").hide();
-      $("#mainC").hide();
+      $('#mainD, #mainW, #mainH, #mainC').attr('disabled', 'disabled');
 
       $("#buy-gas").hide();
       $("#metamask").hide();
@@ -3730,3 +3724,139 @@ jQuery(document).ready(function() {
       };
    }(jQuery, methods));
 }(jQuery));
+
+// Animated background
+
+$(document).ready(function() {
+(() => {
+    const canvas = document.getElementById("binary-bg");
+    const ctx = canvas.getContext("2d");
+    const panel = document.getElementById("form-panel");
+
+    const reducedMotion =
+        window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    let width, height, digits = [];
+    let lastFrame = 0;
+
+    const FPS = 30;
+    const FRAME_TIME = 1000 / FPS;
+
+    function resize() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+
+        width = window.innerWidth;
+        height = window.innerHeight;
+
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        createDigits();
+    }
+
+    function getProtectedArea() {
+        const r = panel.getBoundingClientRect();
+        const margin = 5;
+
+        return {
+            left: r.left - margin,
+            right: r.right + margin,
+            top: r.top - margin,
+            bottom: r.bottom + margin
+        };
+    }
+
+    function insidePanel(x, y, area) {
+        return x > area.left &&
+               x < area.right &&
+               y > area.top &&
+               y < area.bottom;
+    }
+
+    function createDigits() {
+        digits = [];
+
+        if (reducedMotion.matches) return;
+
+        const area = getProtectedArea();
+        const count = Math.min(150, Math.max(50, width / 10));
+
+        let attempts = 0;
+
+        while (digits.length < count && attempts < count * 15) {
+            attempts++;
+
+            const x = Math.random() * width;
+            const y = Math.random() * height;
+
+            // Avoid creating digits over the form.
+            if (insidePanel(x, y, area)) continue;
+
+            digits.push({
+                x,
+                y,
+                value: Math.random() < 0.5 ? "0" : "1",
+                size: 11 + Math.random() * 7,
+                speedX: (Math.random() - 0.5) * 0.25,
+                speedY: -(0.1 + Math.random() * 0.3),
+                phase: Math.random() * Math.PI * 2
+            });
+        }
+    }
+
+    function animate(timestamp) {
+        requestAnimationFrame(animate);
+
+        if (timestamp - lastFrame < FRAME_TIME) return;
+
+        lastFrame = timestamp;
+
+        ctx.clearRect(0, 0, width, height);
+
+        if (reducedMotion.matches) return;
+
+        const area = getProtectedArea();
+
+        for (const d of digits) {
+            d.x += d.speedX;
+            d.y += d.speedY;
+
+            // Recycle digits after they leave the screen.
+            if (d.y < -25) {
+                d.y = height + 20;
+                d.x = Math.random() * width;
+            }
+
+            if (d.x < -20) d.x = width + 20;
+            if (d.x > width + 20) d.x = -20;
+
+            // Never draw inside the form's protected area.
+            if (insidePanel(d.x, d.y, area)) continue;
+
+            // Smoothly fade each digit in and out.
+            const wave =
+                (Math.sin(timestamp * 0.0007 + d.phase) + 1) / 2;
+
+            const opacity = 0.08 + wave * 0.28;
+
+            ctx.font =
+                `${d.size}px monospace`;
+
+            ctx.fillStyle =
+                `rgba(75, 190, 245, ${opacity})`;
+
+            ctx.fillText(d.value, d.x, d.y);
+        }
+    }
+
+    window.addEventListener("resize", resize, { passive: true });
+
+    reducedMotion.addEventListener?.("change", createDigits);
+
+    resize();
+    requestAnimationFrame(animate);
+})();    
+});
+

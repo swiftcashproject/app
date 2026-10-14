@@ -81,12 +81,6 @@
    outline: none;
 }
 
-.btnMain {
-   font-family: Sora;
-   font-weight: bold;
-   letter-spacing: 7px;
-}
-
 .main-button {
    width: 25px;
    height: 28px;
@@ -107,26 +101,18 @@
 
 .input-spend {
    font-family: 'Share Tech Mono';
-   font-size: 1.15rem;
-   font-weight: bold;
-   height: 43px;
-}
-
-.swal-spend {
-   font-family: 'Share Tech Mono';
-   font-size: 1.15rem;
+   font-size: 1.25rem!important;
    font-weight: bold;
    height: 43px;
 }
 
 .tou-swal-title {
-   letter-spacing: 6px;
+   letter-spacing: 3px;
 }
 
 body {
    font-family: Oxanium;
    padding-right: 0px !important;
-   background: url(../images/background.jpg) no-repeat center center fixed;
    -webkit-background-size: cover;
    -moz-background-size: cover;
    -o-background-size: cover;
@@ -170,7 +156,6 @@ form>div {
    color: white;
    font-weight: bold;
    text-align: center;
-   font-size: 12px;
    font-weight: bold;
    letter-spacing: 2px;
    background-color: #120d0e;
@@ -200,19 +185,11 @@ form>div {
    border-color: #9c2323 !important;
 }
 
-.claim:hover {
-   background-color: #771818 !important;
-}
-
 .staked {
    padding: 2px;
    margin: 0px;
    background-color: #4e5152 !important;
    border-color: #4e5152 !important;
-}
-
-.staked:hover {
-   background-color: #3c3e3f !important;
 }
 
 .bnb {
@@ -222,8 +199,21 @@ form>div {
    border-color: #be920d !important;
 }
 
-.bnb:hover {
-   background-color: #9c7709 !important;
+.claim:hover,
+.claim:focus {
+   background-color: #61252c !important;
+   border-color: #7e3038 !important;
+}
+.staked:hover,
+.staked:focus {
+   background-color: #194638 !important;
+   border-color: #2b624f !important;
+}
+.bnb:hover,
+.bnb:focus {
+   background-color: #5d4918 !important;
+   border-color: #80651f !important;
+}
 }
 
 .currency-logo:hover {
@@ -356,18 +346,6 @@ form>div {
    animation-iteration-count: 1;
 }
 
-.form-links {
-   color: white;
-   font-weight: bold;
-   text-align: center;
-   margin-top: 1em;
-   background-color: #120d0e;
-}
-
-.form-links a {
-   color: #fff;
-}
-
 ul.social_icon {
    padding: 0px;
    text-align: center;
@@ -392,4 +370,807 @@ ul.social_icon li a {
 
 ul.social_icon li a:hover {
    background: #23262d;
+}
+/* ==========================================================
+   SwiftCash UI refresh — first pass
+   Keeps Bootstrap 3 and the existing HTML/JavaScript intact.
+   ========================================================== */
+:root {
+   color-scheme: dark;
+   --sc-bg: #0b1220;
+   --sc-panel: rgba(13, 22, 38, 0.94);
+   --sc-panel-soft: rgba(21, 33, 53, 0.92);
+   --sc-border: rgba(148, 163, 184, 0.22);
+   --sc-text: #e8eef8;
+   --sc-muted: #9eacc1;
+   --sc-accent: #4da3ff;
+   --sc-accent-hover: #2588f5;
+   --sc-radius: 16px;
+}
+
+*,
+*::before,
+*::after {
+   box-sizing: border-box;
+}
+
+html {
+   min-height: 100%;
+   -webkit-text-size-adjust: 100%;
+}
+
+body {
+   min-height: 100vh;
+   margin: 0;
+   padding-right: 0 !important;
+   color: var(--sc-text);
+   font-family: Oxanium, system-ui, sans-serif;
+   background-color: var(--sc-bg);
+   background-image: linear-gradient(rgba(5, 10, 20, 0.58), rgba(5, 10, 20, 0.78));
+   background-position: center center;
+   background-repeat: no-repeat;
+   background-attachment: fixed;
+   background-size: cover;
+}
+
+.container {
+   width: 100%;
+   padding-right: 15px;
+   padding-left: 15px;
+}
+
+.form {
+   width: calc(100% - 24px);%;
+   max-width: 400px;
+   margin: clamp(14px, 4vh, 42px) auto 28px;
+   overflow: hidden;
+   border: 1px solid var(--sc-border);
+   border-radius: var(--sc-radius);
+   background: rgba(8, 15, 28, 0.55);
+   box-shadow: 0 22px 60px rgba(0, 0, 0, 0.36);
+   -webkit-backdrop-filter: blur(14px);
+   backdrop-filter: blur(14px);
+}
+
+.topHeader {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   flex-wrap: wrap;
+   gap: 8px;
+   margin: 0;
+   padding: 14px 16px;
+   color: var(--sc-text);
+   background: rgba(15, 27, 45, 0.97);
+   border-bottom: 1px solid var(--sc-border);
+   font-size: 1.3rem;
+   letter-spacing: 1.2px;
+}
+
+.topHeader .label {
+   display: inline-block;
+   padding: 0;
+   color: var(--sc-muted);
+   background: transparent;
+   font-size: inherit;
+   font-weight: 600;
+}
+
+#APR {
+   color: #77c3ff;
+   font-variant-numeric: tabular-nums;
+}
+
+#pwd-container,
+#addr-container {
+   min-width: 0;
+}
+
+form {
+   margin: 0;
+   padding: 22px;
+   color: var(--sc-text);
+   background: var(--sc-panel);
+   border: 0;
+   border-radius: 0;
+   box-shadow: none;
+}
+
+form img {
+   max-width: 100%;
+   height: auto;
+}
+
+#pwd-container form > a:first-child img {
+   width: min(240px, 76%) !important;
+   margin: 3px auto 18px;
+   filter: drop-shadow(0 8px 22px rgba(0, 0, 0, 0.2));
+}
+
+.form-control,
+.input-group .form-control {
+   height: 46px;
+   padding: 11px 13px;
+   color: var(--sc-text);
+   background: #0b1424;
+   border: 1px solid #34445d;
+   border-radius: 9px;
+   box-shadow: none;
+   font-family: 'Share Tech Mono', monospace;
+   font-size: 15px;
+   transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.form-control:disabled,
+.form-control[disabled],
+.form-control[readonly],
+.form-control.disabled,
+fieldset[disabled] .form-control {
+   color: #a2aec0;
+   cursor: not-allowed;
+   background-color: #232b38;
+   border-color: #354155;
+   opacity: 1;
+}
+
+.form-control::placeholder {
+   color: #8190a7;
+   opacity: 1;
+}
+
+.form-control:focus,
+.input-group .form-control:focus {
+   color: #fff;
+   background: #0d192c;
+   border-color: var(--sc-accent);
+   outline: 0;
+   box-shadow: 0 0 0 3px rgba(77, 163, 255, 0.16);
+   z-index: 3;
+}
+
+.input-group .form-control {
+   position: relative;
+   z-index: 1;
+}
+
+.input-group-btn > .btn,
+#camera,
+#sweep,
+#btnPasswordEye,
+#btnPasswordQR {
+   min-width: 46px;
+   min-height: 46px;
+   padding: 8px 11px;
+   color: #c9d8ed;
+   background: #1a2a42;
+   border: 1px solid #34445d;
+   border-radius: 0 9px 9px 0;
+   box-shadow: none;
+}
+
+.input-group-btn > .btn:hover,
+#camera:hover,
+#sweep:hover,
+#btnPasswordEye:hover,
+#btnPasswordQR:hover {
+   color: #fff;
+   background: #263b58;
+   border-color: #526b8d;
+}
+
+.btn,
+button {
+   transition: color 0.16s ease, background-color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+}
+
+.btn-primary,
+.btn-primary:focus {
+   color: #fff;
+   background-color: #246fca;
+   border-color: #246fca;
+}
+
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary.active {
+   color: #fff;
+   background-color: #185ba9;
+   border-color: #185ba9;
+}
+
+.btnMain {
+   min-height: 48px;
+   padding: 12px 16px;
+   border: 1px solid #3989ee;
+   border-radius: 9px;
+   color: #fff;
+   background: linear-gradient(135deg, #3187ed, #2363bc);
+   box-shadow: 0 7px 18px rgba(23, 101, 197, 0.22);
+   font-family: 'Oxanium';
+   font-size: 1.5rem;
+   font-weight: 700;
+   letter-spacing: 3px;
+   text-shadow: none;
+}
+
+.btnMain:hover,
+.btnMain:focus {
+   color: #fff;
+   background: linear-gradient(135deg, #4a9aff, #2b75d4);
+   border-color: #67adff;
+   box-shadow: 0 8px 22px rgba(23, 101, 197, 0.3);
+}
+
+#privlogintoggle,
+#metamasktoggle,
+#watchonlytoggle {
+   width: 64px;
+   height: 58px;
+   margin: 15px 4px 0;
+   padding: 0 !important;
+   border-radius: 10px;
+   background: #17263c;
+   border: 1px solid #344861;
+   font-size: 3rem !important;
+   line-height: 1;
+}
+
+#privlogintoggle:hover,
+#metamasktoggle:hover,
+#watchonlytoggle:hover,
+#privlogintoggle.active,
+#metamasktoggle.active,
+#watchonlytoggle.active {
+   background: #223a59;
+   border-color: #6098d8;
+}
+
+.pwstrength_viewport_errors,
+.pwstrength_viewport_progress {
+   color: #fca5a5;
+}
+
+#addr-container form {
+   padding: 16px;
+}
+
+#addr-container .alert-info {
+   margin-top: 5px;
+   color: var(--sc-text);
+   background: rgba(21, 37, 59, 0.92);
+   border: 1px solid var(--sc-border);
+   border-radius: 11px;
+}
+
+#addr-id {
+   display: inline-block;
+   max-width: calc(100% - 44px);
+   overflow-wrap: anywhere;
+   color: #8fc9ff;
+   font-family: 'Share Tech Mono', monospace;
+}
+
+#addr-balance,
+#addr-stakedbalance,
+#addr-wswiftbalance,
+#addr-legacyswiftbalance,
+#addr-bnbBalance {
+   display: inline-block;
+   max-width: calc(100% - 5px);
+   margin: 2px 0;
+   padding: 6px 8px !important;
+   border: 1px solid rgba(255, 255, 255, 0.08);
+   border-radius: 6px;
+   color: #eaf2ff;
+   background: #263a55;
+   font-size: 12px !important;
+   overflow-wrap: anywhere;
+}
+
+#addr-balance {
+   color: #fff;
+   background-color: #246fca !important;
+   border-color: #246fca !important;
+}
+
+#addr-stakedbalance,
+.staked {
+   background-color: #245b4b !important;
+   border-color: #34745f !important;
+}
+
+.claim,
+#addr-wswiftbalance,
+#addr-legacyswiftbalance {
+   background-color: #7e3038 !important;
+   border-color: #99414a !important;
+}
+
+.bnb,
+#addr-bnbBalance {
+   background-color: #785f20 !important;
+   border-color: #9a7b2b !important;
+}
+
+.clipboard,
+.metamask,
+.refresh,
+.privkey,
+.customfee,
+.changeaddress,
+.gas,
+.claim,
+.staked,
+.bnb {
+   min-width: 32px;
+   min-height: 30px;
+   padding: 5px 8px;
+   margin: 2px 1px;
+   border-radius: 6px;
+}
+
+.currency-logo {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   min-height: 48px;
+   transition: filter 0.18s ease, transform 0.18s ease;
+}
+
+.currency-logo img {
+   width: auto;
+   max-width: 43px;
+   max-height: 43px;
+   object-fit: contain;
+}
+
+.currency-logo:hover {
+   filter: drop-shadow(0 0 8px rgba(104, 173, 255, 0.42)) !important;
+   transform: translateY(-1px);
+}
+
+#addr-receive {
+   padding-top: 14px !important;
+}
+
+#addr-qr {
+   width: 156px;
+   max-width: 100%;
+   padding: 7px;
+   margin: 0 auto;
+   border: 1px solid #c5d0df !important;
+   border-radius: 10px;
+   background: #fff;
+}
+
+#spend-receive {
+   margin: 12px 0 4px !important;
+   text-align: center;
+}
+
+#spend-receive .btn-group {
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+   gap: 6px;
+   padding-top: 4px !important;
+}
+
+#spend-receive label.btn {
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   float: none;
+   width: 52px;
+   height: 48px;
+   margin: 0;
+   padding: 6px;
+   color: #c4d3e8;
+   background: #17263c;
+   border: 1px solid #344861;
+   border-radius: 9px !important;
+   box-shadow: none;
+}
+
+#spend-receive label.btn.active,
+#spend-receive label.btn:hover {
+   color: #fff;
+   background: #245b95;
+   border-color: #4c95e6;
+}
+
+#spend-receive label input {
+   position: absolute;
+   clip: rect(0, 0, 0, 0);
+   pointer-events: none;
+}
+
+.main-button {
+   width: auto;
+   height: auto;
+   font-size: 21px;
+}
+
+.loading-bar {
+   height: 30px;
+   color: #fff;
+   background: #111e31;
+   border: 1px solid #35465f;
+   border-radius: 8px;
+   box-shadow: none;
+}
+
+.loading-text {
+   font-size: 10px;
+   letter-spacing: 1.3px;
+}
+
+.loading-text-dark {
+   color: #c0cde0;
+}
+
+.loading-progress {
+   background: #286fc0;
+}
+
+.form-links {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   flex-wrap: wrap;
+   gap: 3px;
+   margin: 0;
+   padding: 14px 12px;
+   color: var(--sc-muted);
+   background: rgba(10, 18, 31, 0.97);
+   border-top: 1px solid var(--sc-border);
+   font-size: 1.5rem;
+   letter-spacing: 0.3px;
+}
+
+.form-links a {
+   padding: 3px 2px;
+   color: #b8d9ff;
+   text-decoration: none;
+}
+
+.form-links a:hover,
+.form-links a:focus {
+   color: #fff;
+   text-decoration: underline;
+}
+
+.modal-content {
+   color: var(--sc-text);
+   background: #111d30;
+   border: 1px solid var(--sc-border);
+   border-radius: 13px;
+   box-shadow: 0 20px 55px rgba(0, 0, 0, 0.45);
+}
+
+.modal-header,
+.modal-footer {
+   border-color: var(--sc-border);
+}
+
+.modal-title {
+   color: var(--sc-text);
+}
+
+.modal-backdrop {
+   background: #020611;
+}
+
+:focus-visible {
+   outline: 2px solid #7dbbff;
+   outline-offset: 2px;
+}
+
+@media (min-width: 768px) {
+   .container {
+      max-width: 100%;
+   }
+
+   .form {
+      margin-top: clamp(20px, 5vh, 48px);
+   }
+}
+
+@media (max-width: 767px) {
+   body {
+      background-attachment: scroll;
+   }
+
+   .container {
+      padding-right: 10px;
+      padding-left: 10px;
+      overflow-x: clip;
+   }
+
+   .container > .row > .col-md-4 {
+      padding-right: 0;
+      padding-left: 0;
+   }
+
+   .form {
+      max-width: 400px;
+      margin: 10px auto 18px;
+      border-radius: 13px; 
+   }
+
+   form {
+      padding: 17px;
+   }
+
+   #addr-container form {
+      padding: 12px;
+   }
+
+   .topHeader {
+      padding: 12px 10px;
+      font-size: 1.2rem !important;
+   }
+
+   #pwd-container form > a:first-child img {
+      margin-bottom: 14px;
+   }
+
+   .form-links {
+      gap: 5px 8px;
+      padding: 12px 8px;
+      font-size: 0.76rem;
+   }
+
+   #spend-receive label.btn {
+      width: 46px;
+      height: 44px;
+   }
+
+   .main-button {
+      font-size: 19px;
+   }
+}
+
+@media (max-width: 360px) {
+   form {
+      padding: 13px;
+   }
+
+   #addr-container form {
+      padding: 9px;
+   }
+
+   #privlogintoggle,
+   #metamasktoggle,
+   #watchonlytoggle {
+      width: 56px;
+      height: 52px;
+      font-size: 1.8rem !important;
+   }
+
+   .form-links {
+      font-size: 0.72rem;
+   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+   *,
+   *::before,
+   *::after {
+      scroll-behavior: auto !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+   }
+}
+
+/* Animated Logo */
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .logo-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .swiftcash-logo {
+    width: 260px;
+    height: 66px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    margin-inline: auto;
+  }
+
+  /* Logo icon */
+  .swiftcash-logo__icon {
+    width: 62px;
+    height: 62px;
+    flex-shrink: 0;
+    animation: logo-float 2.1s ease-in-out infinite;
+  }
+
+  /* Wordmark and coin subtitle */
+  .swiftcash-logo__text {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+  }
+
+  .swiftcash-logo__wordmark {
+    display: flex;
+    align-items: baseline;
+    white-space: nowrap;
+    font-size: 31px;
+    line-height: 1;
+    font-weight: 750;
+    letter-spacing: -1.35px;
+  }
+
+  .swiftcash-logo__wordmark .swift {
+    color: #ffffff;
+  }
+
+  .swiftcash-logo__wordmark .cash {
+    color: #38a0ff;
+  }
+
+  /* Animated coin names */
+  .coin-subtitle {
+    position: relative;
+    width: 100%;
+    height: 13px;
+    overflow: hidden;
+    text-align: center;
+    font-size: 11px;
+    line-height: 13px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: #aab8cc;
+  }
+
+  .coin-name {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    text-align: center;
+    opacity: 0;
+    animation: coin-glitch 10s infinite;
+    will-change: transform, opacity, filter;
+  }
+
+  .coin-name:nth-child(1) {
+    animation-delay: 0s;
+  }
+
+  .coin-name:nth-child(2) {
+    animation-delay: 2s;
+  }
+
+  .coin-name:nth-child(3) {
+    animation-delay: 4s;
+  }
+
+  .coin-name:nth-child(4) {
+    animation-delay: 6s;
+  }
+  
+  .coin-name:nth-child(5) {
+    animation-delay: 8s;
+  }
+
+  /* Main icon floating animation */
+  @keyframes logo-float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+
+  /* Energetic coin-name transition */
+  @keyframes coin-glitch {
+    0% {
+      opacity: 0;
+      transform: translateY(18px) scale(.55);
+      filter: blur(5px);
+      text-shadow: none;
+    }
+
+    3% {
+      opacity: 1;
+      transform: translateY(-3px) scale(1.3);
+      filter: blur(0);
+      text-shadow:
+        0 0 12px #38a0ff,
+        0 0 24px #087bff;
+    }
+
+    5% {
+      transform: translateY(1px) scale(.94);
+      text-shadow: 0 0 8px #38a0ff;
+    }
+
+    8% {
+      transform: translateY(0) scale(1);
+      text-shadow: 0 0 5px #38a0ff;
+    }
+
+    14% {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      filter: blur(0);
+    }
+
+    15% {
+      transform: translateX(-5px) skewX(-12deg);
+      text-shadow:
+        3px 0 #38a0ff,
+        -3px 0 #a855f7;
+    }
+
+    16% {
+      transform: translateX(5px) skewX(10deg);
+      text-shadow:
+        -3px 0 #38a0ff,
+        3px 0 #a855f7;
+    }
+
+    17% {
+      transform: translateX(-2px) skewX(-4deg);
+      text-shadow: 0 0 10px #38a0ff;
+    }
+
+    20% {
+      opacity: 0;
+      transform: translateY(-12px) scale(1.15);
+      filter: blur(3px);
+      text-shadow: none;
+    }
+
+    25%, 100% {
+      opacity: 0;
+      transform: translateY(-12px) scale(1.15);
+      filter: blur(3px);
+      text-shadow: none;
+    }
+  }
+
+  /* Accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    .swiftcash-logo__icon {
+      animation: none;
+    }
+
+    .coin-name {
+      animation: none;
+    }
+
+    .coin-name:not(:first-child) {
+      display: none;
+    }
+
+    .coin-name:first-child {
+      opacity: 1;
+      transform: none;
+      filter: none;
+    }
+  }
+  
+  /* Animated background layer */
+#binary-bg {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
 }
