@@ -400,7 +400,7 @@ html {
 }
 
 body {
-   min-height: 100vh;
+   min-height: 100dvh;
    margin: 0;
    padding-right: 0 !important;
    color: var(--sc-text);
@@ -420,7 +420,7 @@ body {
 }
 
 .form {
-   width: calc(100% - 24px);%;
+   width: calc(100% - 24px);
    max-width: 400px;
    margin: clamp(14px, 4vh, 42px) auto 28px;
    overflow: hidden;

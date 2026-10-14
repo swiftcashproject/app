@@ -3781,7 +3781,7 @@ $(document).ready(function() {
         if (reducedMotion.matches) return;
 
         const area = getProtectedArea();
-        const count = Math.min(150, Math.max(50, width / 10));
+        const count = Math.min(300, Math.max(100, width / 10));
 
         let attempts = 0;
 
