@@ -2402,12 +2402,7 @@ function spendERC20() {
 
             balance = balance - tokenAmount;
 
-            $('#addr-balance').html(
-               "Balance: " +
-               toCustomFixed(balance) +
-               " " +
-               CURRENT_COIN
-            );
+            refresh();
 
             setTimeout(function() {
                window.open(
@@ -2490,8 +2485,8 @@ function deposit() {
 
             // Update wallet balance
             balance = balance - tokenAmount;
-
-            refreshStakedBalance();
+            
+            refresh();
 
             setTimeout(function() {
                window.open(
@@ -2938,6 +2933,7 @@ jQuery(document).ready(function() {
           $('#email').val("");
           $('#password').val("");
           $('#email').prop("disabled", true);
+          $('#email').prop("placeholder", "");
           $('#password').prop("disabled", false);
           $('#password').prop("placeholder", "Private Key");
           $('#btnPasswordQR').show();
@@ -2947,6 +2943,7 @@ jQuery(document).ready(function() {
           $('.pwstrength_viewport_progress').hide();
        } else {
           $('#email').prop("disabled", false);
+          $('#email').prop("placeholder", "Email");
           $('#password').prop("disabled", false);
           $('#password').prop("placeholder", "Password");
           $('#btnPasswordQR').hide();
@@ -2968,8 +2965,9 @@ jQuery(document).ready(function() {
           $('#email').val("");
           $('#password').val("");
           $('#email').prop("disabled", true);
-          $('#password').prop("placeholder", "Password");
+          $('#email').prop("placeholder", "");
           $('#password').prop("disabled", true);
+          $('#password').prop("placeholder", "");
           $('#btnPasswordQR').hide();
           $('#btnPasswordEye').show();
           $('#btnPasswordEye').prop("disabled", true);
@@ -2978,8 +2976,9 @@ jQuery(document).ready(function() {
           $('.pwstrength_viewport_progress').hide();
        } else {
           $('#email').prop("disabled", false);
-          $('#password').prop("placeholder", "Password");
+          $('#email').prop("placeholder", "Email");
           $('#password').prop("disabled", false);
+          $('#password').prop("placeholder", "Password");
           $('#btnPasswordQR').hide();
           $('#btnPasswordEye').show();
           $('#btnPasswordEye').prop("disabled", false);
@@ -3001,7 +3000,7 @@ jQuery(document).ready(function() {
           $('#email').prop("disabled", false);
           $('#email').prop("placeholder", "Address");
           $('#email').prop('type', 'text');
-          $('#password').prop("placeholder", "Password");
+          $('#password').prop("placeholder", "");
           $('#password').prop("disabled", true);
           $('#btnPasswordQR, #btnPasswordEye').prop('disabled', true);
           $('#signin').text("WATCH🕵️");
@@ -3294,7 +3293,7 @@ jQuery(document).ready(function() {
       if (!text) {
          return '';
       }
-      return '<span style="color: #d52929">' + text + '</span>';
+      return '<span style="color: #c14c4c">' + text + '</span>';
    };
    defaultOptions.ui.popoverError = function(errors) {
       "use strict";

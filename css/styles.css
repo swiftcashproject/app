@@ -71,14 +71,19 @@
 }
 
 .progress-bar {
-   color: #333;
+   color: #a5a5a5;
 }
 
-   {
-   -webkit-box-sizing: border-box;
-   -moz-box-sizing: border-box;
+.progress-bar-success {
+   color:#0a0a0a;
+}
+
+.progress {
+   background: #0c1526;
+}
+
+* {
    box-sizing: border-box;
-   outline: none;
 }
 
 .main-button {
@@ -508,13 +513,12 @@ form img {
 fieldset[disabled] .form-control {
    color: #a2aec0;
    cursor: not-allowed;
-   background-color: #232b38;
+   background-color: #101010;
    border-color: #354155;
    opacity: 1;
 }
 
 .form-control::placeholder {
-   color: #8190a7;
    opacity: 1;
 }
 
