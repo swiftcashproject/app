@@ -736,7 +736,6 @@ button {
 #addr-qr {
    width: 156px;
    max-width: 100%;
-   padding: 7px;
    margin: 0 auto;
    border: 1px solid #c5d0df !important;
    border-radius: 10px;

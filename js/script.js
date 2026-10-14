@@ -1768,7 +1768,7 @@ function loadAddress() {
    $("#addr-balance").css("color", "#74bed8");
    $("#pwd-container").hide();
    $("#addr-container").show();
-   $("#addr-qr").attr("src", "https://api.qrserver.com/v1/create-qr-code/?data=" + address + "&color=" + PARAMS[CURRENT_COIN].qrColor);
+   $("#addr-qr").attr("src", getAddressQR());
    $("#addr-qr").attr("alt", address);
    $("#addr-id-clipboard").attr("data-clipboard-text", address);
    $("#addr-id-clipboard").attr("title", "Copy address");
@@ -1776,6 +1776,20 @@ function loadAddress() {
    $("#addr-id").html(address);
    changeAddress = address;
    refresh();
+}
+
+function getAddressQR() {    
+    const qrUrl = new URL("https://qrcodeengine.app/api/v1/qr.svg");
+
+    qrUrl.searchParams.set("data", address);
+    qrUrl.searchParams.set("body", "rounded");
+    qrUrl.searchParams.set("eyeFrame", "rounded");
+    qrUrl.searchParams.set("eyeBall", "circle");
+    qrUrl.searchParams.set("fg", PARAMS[CURRENT_COIN].qrColor.replace("#", ""));
+    qrUrl.searchParams.set("bg", "#ffffff");
+    qrUrl.searchParams.set("ec", "H");
+
+    return qrUrl.toString();
 }
 
 var USD = false;
@@ -2173,7 +2187,7 @@ function rsvs(rval) {
          $("#submit").html("RATE HIKE");
          $("#addr-spend").show();
          $("#addr-receive").hide();
-         $("#address").val('Your Power: 0.0000000000000000000000000%');
+         $("#address").val('Your Power: 0.00%');
          updateAdjustmentPower();
 
          $("#address").attr("disabled", "disabled");
@@ -2188,7 +2202,7 @@ function rsvs(rval) {
          $("#submit").html("RATE CUT");
          $("#addr-spend").show();
          $("#addr-receive").hide();
-         $("#address").val('Your Power: 0.0000000000000000000000000%');
+         $("#address").val('Your Power: 0.00%');
          updateAdjustmentPower();
 
          $("#address").attr("disabled", "disabled");
