@@ -1418,8 +1418,8 @@ function hashit(hash, callback) {
 function switchCoin(whichCoin) {
    if (METAMASK_MODE && !PARAMS[whichCoin].isERC20) {
       alertError(
-         "Connected via Metamask!",
-         "This coin isn't supported when you connect via Metamask! Log in with an email and password or with a private key."
+         "Metamask Mode!",
+         "This coin isn't supported when you connect with Metamask! Log in with an email and password or with a private key."
       );
       return;
    }
@@ -1428,7 +1428,7 @@ function switchCoin(whichCoin) {
        WATCHONLY_FLAG = true;
    } else if (WATCHONLY_MODE && WATCHONLY_FLAG) {
       alertError(
-         "Watch Only Mode!",
+         "Watch Mode!",
          "This action is not supported in watch mode."
       );
       return;

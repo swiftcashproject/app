@@ -1,5 +1,18 @@
 @CHARSET "UTF-8";
 
+
+/* ==========================================================
+   CSS Fonts
+   ========================================================== */
+   
+@font-face {
+  font-family: 'Oxanium';
+  src: url('../webfonts/Oxanium-VariableFont_wght.ttf') format('truetype');
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ==========================================================
    CSS Variables & Root Settings
    ========================================================== */
