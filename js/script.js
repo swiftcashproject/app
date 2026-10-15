@@ -2905,12 +2905,17 @@ jQuery(document).ready(function() {
    if (Cookies.get('termsAccepted') == null) {
       swal.fire({
          icon: "info",
-         title: "TERMS OF USE",
+         title: "Terms of Use",
          customClass: {title: "tou-swal-title"},
-         html: "No registration is required and your email doesn't have to be real. " +
-            "Your initial login will virtually serve as a registration. " +
-            "Be sure to securely back up your email and password. " +
-            "If lost or forgotten, your account cannot be recovered!" +
+         html:
+               "- This is a non-custodial wallet <br/>" +
+               "- Private keys never leave the browser <br/>" +
+               "- No registration is required<br/>" +
+               "- Your email can be fictitious <br/>" +
+               "- First login acts as registration <br/>" +
+               "- Back up your email and password <br/>" +
+               "- Back up your private keys <br/><br/>" +
+               "If you lose your email plus your password, without a backup of your private keys, your account cannot be recovered!" +
             "<br/><br/><span style='font-weight:bold; letter-spacing:2px;'>BE YOUR OWN BANK</span>",
          confirmButtonText: "Agree",
          showCancelButton: true
