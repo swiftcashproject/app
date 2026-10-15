@@ -593,7 +593,7 @@ button {
    font-family: 'Oxanium';
    font-size: 1.5rem;
    font-weight: 700;
-   letter-spacing: 3px;
+   letter-spacing: 4px;
    text-shadow: none;
 }
 
@@ -661,7 +661,7 @@ button {
 #addr-bnbBalance {
    display: inline-block;
    max-width: calc(100% - 5px);
-   margin: 2px 0;
+   margin: 1px;
    padding: 6px 8px !important;
    border: 1px solid rgba(255, 255, 255, 0.08);
    border-radius: 4px;

@@ -1476,7 +1476,10 @@ function switchCoinNow(whichCoin) {
    $("#address").attr("placeholder", whichCoin + " address");
 
    if (whichCoin == "SWIFT") {
-      $('#mainD, #mainW, #mainH, #mainC').removeAttr('disabled');
+       
+      if(!WATCHONLY_MODE) { 
+        $('#mainD, #mainW, #mainH, #mainC').removeAttr('disabled');
+      }
 
       $("#buy-gas").show();
       $("#metamask").show();
