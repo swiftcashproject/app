@@ -1416,7 +1416,7 @@ function hashit(hash, callback) {
 }
 
 function switchCoin(whichCoin) {
-   if (METAMASK_MODE && !PARAMS[CURRENT_COIN].isERC20) {
+   if (METAMASK_MODE && !PARAMS[whichCoin].isERC20) {
       alertError(
          "Connected via Metamask!",
          "This coin isn't supported when you connect via Metamask! Log in with an email and password or with a private key."
