@@ -119,10 +119,11 @@ form > div {
    width: min(240px, 76%) !important;
    margin: 3px auto 18px;
    filter: drop-shadow(0 8px 22px rgba(0, 0, 0, 0.2));
+   padding: 1rem 2.5rem;
 }
 
 #addr-container form {
-   padding: 16px;
+   padding: 1rem 2.5rem;
 }
 
 .form-control,

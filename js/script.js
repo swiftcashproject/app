@@ -1,5 +1,3 @@
-const EXPLORER_TIMER = 3000;
-
 var CURRENT_COIN = 'SWIFT';
 var METAMASK_MODE = false;
 var WATCHONLY_MODE = false;
@@ -357,18 +355,11 @@ function claimWrapped() {
 
             alertSuccess(
                "Claimed!",
-               "Your wSWIFT balance was successfully converted to SWIFT."
+               "Your wSWIFT balance was successfully converted to SWIFT.",
+               tx.hash
             );
 
             refresh();
-
-            setTimeout(function() {
-               window.open(
-                  PARAMS.SWIFT.explorer +
-                  "tx/" +
-                  tx.hash
-               );
-            }, EXPLORER_TIMER);
 
             $('#submit').prop("disabled", false);
             $('#claim-wrapped').prop("disabled", false);
@@ -587,15 +578,9 @@ async function claimNative() {
 
          alertSuccess(
             "Claimed!",
-            "Your legacy SWIFT balance was successfully converted to SWIFT."
+            "Your legacy SWIFT balance was successfully converted to SWIFT.",
+            tx.hash
          );
-
-         setTimeout(function() {
-            window.open(
-               PARAMS.SWIFT.explorer + "/tx/" + tx.hash,
-               "_blank"
-            );
-         }, EXPLORER_TIMER);
 
          $('#submit').prop("disabled", false);
          $('#claim-native').prop("disabled", false);
@@ -655,7 +640,7 @@ function sendBNB() {
          '</div>' +
 
          '<div id="bnb-loader" style="display:none; margin-top:15px;">' +
-         '<div class="loading-bar">' +
+         '<div class="loading-bar" style="background: #fff">' +
          '<div class="loading-progress"></div>' +
          '<span class="loading-text">SENDING BNB...</span>' +
          '</div>' +
@@ -813,20 +798,11 @@ function sendBNB() {
 
       var tx = result.value;
 
-      Swal.fire({
-         icon: "success",
-         title: "BNB sent!",
-         text: "Transaction was broadcasted successfully."
-      });
-
-      setTimeout(function() {
-
-         window.open(
-            PARAMS.SWIFT.explorer + "/tx/" + tx.hash,
-            "_blank"
-         );
-
-      }, EXPLORER_TIMER);
+      alertSuccess(
+               "BNB sent!",
+               "Transaction was broadcasted successfully.",
+               tx.hash
+            );
 
       refresh();
 
@@ -1244,11 +1220,15 @@ function handleInsufficientFundsError() {
    );
 }
 
-function alertSuccess(t, m) {
+function alertSuccess(t, m, txHash = "") {
    swal.fire({
       icon: "success",
       title: t,
-      text: m
+      ...(txHash
+         ? {
+              html: m + '<br><br><a href="' + PARAMS[CURRENT_COIN].explorer + '/tx/' + txHash + '" target="_blank" rel="noopener noreferrer">View on Explorer</a>'
+           }
+         : { text: m })
    });
 }
 
@@ -2303,13 +2283,10 @@ function spendUTXO() {
 
             $('#addr-balance').html("Balance: " + toCustomFixed(balance) + " " + CURRENT_COIN);
 
-            setTimeout(function() {
-               window.open(PARAMS[CURRENT_COIN].explorer + "tx/" + txid);
-            }, EXPLORER_TIMER);
-
             alertSuccess(
                CURRENT_COIN + " sent!",
-               "Transaction was broadcasted successfully."
+               "Transaction was broadcasted successfully.",
+               txid
             );
          } else {
             console.log(result);
@@ -2407,15 +2384,10 @@ function spendERC20() {
 
             refresh();
 
-            setTimeout(function() {
-               window.open(
-                  PARAMS[CURRENT_COIN].explorer + "tx/" + tx.hash
-               );
-            }, EXPLORER_TIMER);
-
             alertSuccess(
                CURRENT_COIN + " sent!",
-               "Transaction was broadcasted successfully."
+               "Transaction was broadcasted successfully.",
+               tx.hash
             );
 
             $('#address').prop("disabled", false).val("");
@@ -2491,17 +2463,10 @@ function deposit() {
             
             refresh();
 
-            setTimeout(function() {
-               window.open(
-                  PARAMS.SWIFT.explorer +
-                  "tx/" +
-                  tx.hash
-               );
-            }, EXPLORER_TIMER);
-
             alertSuccess(
                "SWIFT sent!",
-               "Transaction was broadcasted successfully."
+               "Transaction was broadcasted successfully.",
+               tx.hash
             );
 
             $('#amount')
@@ -2584,17 +2549,10 @@ function withdraw() {
 
             refresh();
 
-            setTimeout(function() {
-               window.open(
-                  PARAMS.SWIFT.explorer +
-                  "tx/" +
-                  tx.hash
-               );
-            }, EXPLORER_TIMER);
-
             alertSuccess(
                "SWIFT sent!",
-               "Transaction was broadcasted successfully."
+               "Transaction was broadcasted successfully.",
+               tx.hash
             );
 
             $('#amount')
@@ -2666,17 +2624,10 @@ async function mintInterest() {
 
             $("#addr-stakedbalance").html(stakeText);
 
-            setTimeout(function() {
-               window.open(
-                  PARAMS.SWIFT.explorer +
-                  "tx/" +
-                  tx.hash
-               );
-            }, EXPLORER_TIMER);
-
             alertSuccess(
                "Minted!",
-               "New interest was successfully minted."
+               "New interest was successfully minted.", 
+               tx.hash
             );
 
             $('#submit').prop("disabled", false);
@@ -2798,15 +2749,7 @@ function adjustInterest(action) {
                      "Rate hike completed successfully." :
                      "Rate cut completed successfully.";
 
-                  setTimeout(function() {
-                     window.open(
-                        PARAMS.SWIFT.explorer +
-                        "tx/" +
-                        tx.hash
-                     );
-                  }, EXPLORER_TIMER);
-
-                  alertSuccess(title, message);
+                  alertSuccess(title, message, tx.hash);
                   refreshAPR();
 
                   $('#submit').prop("disabled", false);
