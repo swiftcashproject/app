@@ -1,502 +1,525 @@
 <html>
 
 <head>
-   <!-- Character Encoding & Viewport -->
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Character Encoding & Viewport -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-   <!-- Page Title -->
-   <title>SwiftCash</title>
+    <!-- Page Title -->
+    <title>SwiftCash</title>
 
-   <!-- Google Fonts -->
-   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oxanium&family=Share+Tech+Mono&family=Sora&family=Michroma&display=swap">
+    <!-- Google Fonts -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Oxanium&family=Share+Tech+Mono&family=Sora&family=Michroma&display=swap">
 
-   <!-- Font Awesome -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css">
 
-   <!-- JavaScript Libraries -->
-   <script src="./js/jquery-3.5.0.min.js"></script>
-   <script src="./js/bootstrap.min.js"></script>
-   <script src="./js/sweetalert2.all.min.js"></script>
-   <script type="text/javascript" src="./js/instascan.min.js"></script>
-   <script src="js/ethers.min.js"></script>
-   <script src="js/merkle-tree.min.js"></script>
-   <script src="./js/clipboard.min.js"></script>
-   
-   <!-- CSS Stylesheets -->
-   <link href="./css/bootstrap.min.css" rel="stylesheet">
-   <link href="./css/sweetalert2.min.css" rel="stylesheet">
-   <link href="./css/styles.css" rel="stylesheet" id="styles-css">
+    <!-- JavaScript Libraries -->
+    <script src="./js/jquery-3.5.0.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/sweetalert2.all.min.js"></script>
+    <script type="text/javascript" src="./js/instascan.min.js"></script>
+    <script src="js/ethers.min.js"></script>
+    <script src="js/merkle-tree.min.js"></script>
+    <script src="./js/clipboard.min.js"></script>
 
-   <!-- PWA & App Icons -->
-   <link rel="icon" href="./icons/favicon.svg" type="image/svg+xml">
-   <link rel="icon" href="./icons/favicon.ico" type="image/x-icon" sizes="48x48">
-   <link rel="icon" href="./icons/icon-192x192.png" type="image/png" sizes="192x192">
-   <link rel="icon" href="./icons/icon-512x512.png" type="image/png" sizes="512x512">
-   <link rel="apple-touch-icon" href="./icons/icon-180x180.png">
-   <link rel="manifest" href="./manifest.json">
+    <!-- CSS Stylesheets -->
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/sweetalert2.min.css" rel="stylesheet">
+    <link href="./css/styles.css" rel="stylesheet" id="styles-css">
 
-   <!-- Browser & Mobile App Settings -->
-   <meta name="msapplication-TileColor" content="#2b5797">
-   <meta name="theme-color" content="#123899">
-   <meta name="apple-mobile-web-app-capable" content="yes">
-   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-   <meta name="apple-mobile-web-app-title" content="SwiftCash">
+    <!-- PWA & App Icons -->
+    <link rel="icon" href="./icons/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="./icons/favicon.ico" type="image/x-icon"
+        sizes="48x48">
+    <link rel="icon" href="./icons/icon-192x192.png" type="image/png"
+        sizes="192x192">
+    <link rel="icon" href="./icons/icon-512x512.png" type="image/png"
+        sizes="512x512">
+    <link rel="apple-touch-icon" href="./icons/icon-180x180.png">
+    <link rel="manifest" href="./manifest.json">
 
-   <!-- Application Scripts -->
-   <script src="./js/cc.js"></script>
-   <script src="./js/cookie.js"></script>
-   <script src="./js/script.js"></script>
+    <!-- Browser & Mobile App Settings -->
+    <meta name="msapplication-TileColor" content="#2b5797">
+    <meta name="theme-color" content="#123899">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="SwiftCash">
+
+    <!-- Application Scripts -->
+    <script src="./js/cc.js"></script>
+    <script src="./js/cookie.js"></script>
+    <script src="./js/script.js"></script>
 </head>
 
 <body>
-<canvas id="binary-bg" aria-hidden="true"></canvas>
-   <div class="container">
-      <div class="row">
-         <div class="col-md-4"></div>
-         <div class="col-md-4"
-            style="display: grid; align-items: center; min-height: 100vh; height: 100vh; padding: 10px;">
-            <section id="form-panel" class="form">
-               <div class="topHeader">
-                  <a href="javascript:void(0);"
-                     class="label hvr-buzz-out label-secondary">Current APR:</a>
-                  <a id="APR" href="javascript:refreshAPR();"
-                     class="label hvr-buzz-out label-secondary"></a>
-               </div>
-               <div id="pwd-container">
-                  <form method="post" action="javascript:login();" role="login"
-                     style="padding: 2.5rem;">
-                     <div class="logo-wrapper">
-  <div class="swiftcash-logo">
+    <canvas id="binary-bg" aria-hidden="true"></canvas>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4"
+                style="display: grid; align-items: center; min-height: 100vh; height: 100vh; padding: 10px;">
+                <section id="form-panel" class="form">
+                    <div class="topHeader">
+                        <a href="javascript:void(0);"
+                            class="label hvr-buzz-out label-secondary">Current
+                            APR:</a>
+                        <a id="APR" href="javascript:refreshAPR();"
+                            class="label hvr-buzz-out label-secondary"></a>
+                    </div>
+                    <div id="pwd-container">
+                        <form method="post" action="javascript:login();"
+                            role="login" style="padding: 2.5rem;">
+                            <div class="logo-wrapper">
+                                <div class="swiftcash-logo">
 
-    <!-- Placeholder logo icon: replace with your original SwiftCash SVG -->
-    
-<svg
-  class="swiftcash-logo__icon"
-  xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 100 100"
-  fill="none"
-  role="img"
-  aria-label="SwiftCash logo"
->
-  <defs>
-    <linearGradient
-      id="swiftCoinGradient"
-      x1="0%"
-      y1="0%"
-      x2="100%"
-      y2="100%"
-    >
-      <stop offset="0%" stop-color="#3b9eff" />
-      <stop offset="50%" stop-color="#1e7cd5" />
-      <stop offset="100%" stop-color="#0a5fb0" />
-    </linearGradient>
+                                    <svg class="swiftcash-logo__icon"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 100 100" fill="none"
+                                        role="img" aria-label="SwiftCash logo">
+                                        <defs>
+                                            <linearGradient
+                                                id="swiftCoinGradient" x1="0%"
+                                                y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%"
+                                                    stop-color="#3b9eff" />
+                                                <stop offset="50%"
+                                                    stop-color="#1e7cd5" />
+                                                <stop offset="100%"
+                                                    stop-color="#0a5fb0" />
+                                            </linearGradient>
 
-    <linearGradient
-      id="swiftCoinInner"
-      x1="0%"
-      y1="0%"
-      x2="100%"
-      y2="100%"
-    >
-      <stop offset="0%" stop-color="#1e7cd5" />
-      <stop offset="100%" stop-color="#0a4d8c" />
-    </linearGradient>
+                                            <linearGradient id="swiftCoinInner"
+                                                x1="0%" y1="0%" x2="100%"
+                                                y2="100%">
+                                                <stop offset="0%"
+                                                    stop-color="#1e7cd5" />
+                                                <stop offset="100%"
+                                                    stop-color="#0a4d8c" />
+                                            </linearGradient>
 
-    <filter
-      id="swiftCoinShadow"
-      x="-20%"
-      y="-20%"
-      width="140%"
-      height="140%"
-    >
-      <feDropShadow
-        dx="0"
-        dy="3"
-        stdDeviation="4"
-        flood-color="#0a5fb0"
-        flood-opacity="0.4"
-      />
-    </filter>
-  </defs>
+                                            <filter id="swiftCoinShadow"
+                                                x="-20%" y="-20%" width="140%"
+                                                height="140%">
+                                                <feDropShadow dx="0" dy="3"
+                                                    stdDeviation="4"
+                                                    flood-color="#0a5fb0"
+                                                    flood-opacity="0.4" />
+                                            </filter>
+                                        </defs>
 
-  <circle
-    cx="50"
-    cy="50"
-    r="46"
-    fill="url(#swiftCoinGradient)"
-    filter="url(#swiftCoinShadow)"
-  />
+                                        <circle cx="50" cy="50" r="46"
+                                            fill="url(#swiftCoinGradient)"
+                                            filter="url(#swiftCoinShadow)" />
 
-  <circle
-    cx="50"
-    cy="50"
-    r="46"
-    stroke="#0a4d8c"
-    stroke-width="2"
-    fill="none"
-    opacity="0.3"
-  />
+                                        <circle cx="50" cy="50" r="46"
+                                            stroke="#0a4d8c" stroke-width="2"
+                                            fill="none" opacity="0.3" />
 
-  <circle
-    cx="50"
-    cy="50"
-    r="38"
-    fill="url(#swiftCoinInner)"
-    opacity="0.5"
-  />
+                                        <circle cx="50" cy="50" r="38"
+                                            fill="url(#swiftCoinInner)"
+                                            opacity="0.5" />
 
-  <path
-    d="M52 18 L34 54 L46 54 L42 82 L66 44 L52 44 L58 18 Z"
-    fill="white"
-    stroke="white"
-    stroke-width="1"
-    stroke-linejoin="round"
-  />
-</svg>
+                                        <path
+                                            d="M52 18 L34 54 L46 54 L42 82 L66 44 L52 44 L58 18 Z"
+                                            fill="white" stroke="white"
+                                            stroke-width="1"
+                                            stroke-linejoin="round" />
+                                    </svg>
 
 
-    <div class="swiftcash-logo__text">
+                                    <div class="swiftcash-logo__text">
 
-      <div class="swiftcash-logo__wordmark">
-        <span class="swift">Swift</span><span class="cash">Cash</span>
-      </div>
+                                        <div class="swiftcash-logo__wordmark">
+                                            <span
+                                                class="swift">Swift</span><span
+                                                class="cash">Cash</span>
+                                        </div>
 
-      <div class="coin-subtitle" aria-label="Supported coins">
-        <span class="coin-name">BNB</span>
-        <span class="coin-name">Bitcoin</span>
-        <span class="coin-name">Litecoin</span>
-        <span class="coin-name">Dogecoin</span>
-        <span class="coin-name">Dash</span>
-      </div>
+                                        <div class="coin-subtitle"
+                                            aria-label="Supported coins">
+                                            <span class="coin-name">BNB</span>
+                                            <span
+                                                class="coin-name">Bitcoin</span>
+                                            <span
+                                                class="coin-name">Litecoin</span>
+                                            <span
+                                                class="coin-name">Dogecoin</span>
+                                            <span class="coin-name">Dash</span>
+                                        </div>
 
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="padding-bottom: 15px">
+                                <input id="email" type="email" name="email"
+                                    placeholder="Email" required
+                                    class="form-control input-lg" value="" />
+                                <div class="input-group">
+                                    <input style="margin: 0px;" type="password"
+                                        class="form-control input-lg"
+                                        id="password" placeholder="Password"
+                                        required="" />
+                                    <span class="input-group-btn">
+                                        <button id="btnPasswordQR" class="btn"
+                                            style="margin: 0px; display: none;"
+                                            type="button"
+                                            onclick="javascript:openQrModal('password');"><i
+                                                class="fa fa-camera"
+                                                style="height: 29; width: 29; font-size: 30px;"></i></button>
+                                        <button id="btnPasswordEye" class="btn"
+                                            style="margin: 0px;" type="button"
+                                            onclick="javascript:eyeFunction('password');"><i
+                                                class="fa fa-eye"
+                                                style="height: 29; width: 29; font-size: 30px;"></i></button>
+                                    </span>
+                                </div>
+                                <div class="pwstrength_viewport_errors"></div>
+                                <div class="pwstrength_viewport_progress"></div>
+                                <button id="signin" type="submit" name="go"
+                                    class="btnMain btn btn-lg btn-primary btn-block">LOGIN🔏</button>
+                                <button id="privlogintoggle"
+                                    title="Login with a private key"
+                                    type="button"
+                                    style="font-weight: bold; font-size: 4em; padding: 0px;"
+                                    class="btn btn-primary" data-toggle="button"
+                                    aria-pressed="false"
+                                    autocomplete="off">🔐</button>
+                                <button id="metamasktoggle"
+                                    title="Connect with Metamask" type="button"
+                                    style="font-weight: bold; font-size: 4em; padding: 0px;"
+                                    class="btn btn-primary" data-toggle="button"
+                                    aria-pressed="false"
+                                    autocomplete="off">🦊</button>
+                                <button id="watchonlytoggle"
+                                    title="Login with an address (watch only)"
+                                    type="button"
+                                    style="font-weight: bold; font-size: 4em; padding: 0px;"
+                                    class="btn btn-primary" data-toggle="button"
+                                    aria-pressed="false"
+                                    autocomplete="off">🕵️</button>
+                            </div>
+                            <div id="login-loader" style="display: none;">
+                                <div class="loading-bar">
+                                    <div class="loading-progress"></div>
+                                    <span class="loading-text">LOGGING
+                                        IN...</span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="addr-container" style="display: none;">
+                        <form method="post" action="javascript:submitAction();"
+                            role="spend" style="padding: 2.5rem;">
+                            <div class="row"
+                                style="display: flex; justify-content: center; align-items: center; margin-bottom: 5px;">
+                                <div title="SWIFT"
+                                    class="col-md-3 currency-logo"
+                                    style="filter: drop-shadow(5px 5px 5px #4b4b4c); padding: 2px; width: 52px;">
+                                    <a href="javascript:switchCoin('SWIFT');"><img
+                                            src="./images/swiftcash.png"
+                                            class="img-responsive" alt="" /></a>
+                                </div>
+                                <div title="BTC" class="col-md-3 currency-logo"
+                                    style="padding: 2px; width: 53px;"><a
+                                        href="javascript:switchCoin('BTC');"><img
+                                            src="./images/bitcoin.png"
+                                            class="img-responsive" alt="" /></a>
+                                </div>
+                                <div title="LTC" class="col-md-3 currency-logo"
+                                    style="padding: 2px; width: 52px;"><a
+                                        href="javascript:switchCoin('LTC');"><img
+                                            src="./images/litecoin.png"
+                                            class="img-responsive" alt="" /></a>
+                                </div>
+                                <div title="DOGE" class="col-md-3 currency-logo"
+                                    style="padding: 2px; width: 53px;"><a
+                                        href="javascript:switchCoin('DOGE');"><img
+                                            src="./images/dogecoin.png"
+                                            class="img-responsive" alt="" /></a>
+                                </div>
+                                <div title="DASH" class="col-md-3 currency-logo"
+                                    style="padding: 2px; width: 53px;"><a
+                                        href="javascript:switchCoin('DASH');"><img
+                                            src="./images/dash.png"
+                                            class="img-responsive" alt="" /></a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="alert alert-info fade in"
+                                    style="margin-bottom: 0px; padding-left: 5px; padding-right: 5px; font-weight: bold; font-size: 12px;">
+                                    <a href="" target="_blank"
+                                        style="font-size: 1.0em;"
+                                        id="addr-id">SWIFTADDRESS</a>
+                                    <button id="addr-id-clipboard" type="button"
+                                        class="btn btn-primary clipboard"
+                                        data-clipboard-text="SWIFTADDRESS">
+                                        <i class="fa fa-copy"></i>
+                                    </button>
+                                    <div style="margin-top: 3px;">
+                                        <a href="javascript:togglePrice();"
+                                            class="label hvr-buzz-out label-primary"
+                                            id="addr-balance"
+                                            style="vertical-align: middle; font-size: 11.8px; padding: 4.3px;">Balance:
+                                            0.00000000 SWIFT</a>
+                                        <button title="Refresh balance"
+                                            id="addr-balance-refresh"
+                                            type="button"
+                                            class="btn btn-primary refresh"
+                                            onclick="javascript:loadAddress();">
+                                            <i class="fa fa-bolt-lightning"></i>
+                                        </button>
+                                        <button title="Copy private key"
+                                            id="privatekey-copy" type="button"
+                                            class="btn btn-primary privkey"
+                                            data-placement="bottom"
+                                            onclick="javascript:copyPrivateKey();">
+                                            <i class="fa fa-key"></i>
+                                        </button>
+                                        <button title="Custom change address"
+                                            id="changeaddress-modify"
+                                            type="button"
+                                            class="btn btn-primary changeaddress"
+                                            data-placement="bottom"
+                                            onclick="javascript:modifyTheChangeAddress();">
+                                            <i class="fa fa-vial""></i>
+                              </button>
+                              <button title=" Custom fee" id="custom-fee"
+                                                type="button"
+                                                class="btn btn-primary customfee"
+                                                onclick="changeTheFee();">
+                                                <i class="fa fa-wrench"></i>
+                                        </button>
+                                        <button title="Add to Metamask"
+                                            id="metamask" type="button"
+                                            class="btn btn-primary metamask"
+                                            onclick="addToMetamask();">
+                                            <i
+                                                class="fa fa-brands fa-ethereum"></i>
+                                        </button>
+                                    </div>
+                                    <div id="divStakedBalance"
+                                        style="margin-top: 3px; display: none;">
+                                        <a class="label hvr-buzz-out label-primary staked"
+                                            id="addr-stakedbalance"
+                                            style="vertical-align: middle; font-size: 11.8px; padding: 4.3px;">Staked:
+                                            0.00 SWIFT</a>
+                                        <button
+                                            title="Mint the accrued interest"
+                                            id="mint-interest" type="button"
+                                            class="btn btn-primary staked"
+                                            onclick="mintInterest();">
+                                            <i class="fa fa-chart-line"></i>
+                                        </button>
+                                        <button title="Unlock your stake"
+                                            id="unlock-stake" type="button"
+                                            class="btn btn-primary staked"
+                                            onclick="$('#mainW').click();">
+                                            <i class="fa fa-unlock"></i>
+                                        </button>
+                                    </div>
+                                    <div id="divWSwiftBalance"
+                                        style="margin-top: 3px; display: none;">
+                                        <a class="label hvr-buzz-out label-primary claim"
+                                            id="addr-wswiftbalance"
+                                            style="vertical-align: middle; font-size: 11.8px; padding: 4.3px;">Wrapped
+                                            Balance:
+                                            0.00 wSWIFT</a>
+                                        <button
+                                            title="Migrate from wSWIFT to SWIFT"
+                                            id="claim-wrapped" type="button"
+                                            class="btn btn-primary claim"
+                                            onclick="claimWrapped();">
+                                            <i class="fa fa-money-bill-transfer"
+                                                style="width: 18px;"></i>
+                                        </button>
+                                    </div>
+                                    <div id="divLegacySwiftBalance"
+                                        style="margin-top: 3px; display: none;">
+                                        <a class="label hvr-buzz-out label-primary claim"
+                                            id="addr-legacyswiftbalance"
+                                            style="vertical-align: middle; font-size: 11.8px; padding: 4.3px;">Legacy
+                                            Balance:
+                                            0.00 LSWIFT</a>
+                                        <button title="Show next"
+                                            id="legacy-next" type="button"
+                                            class="btn btn-primary claim"
+                                            onclick="nextLegacy();">
+                                            <i class="fa fa-forward-step"></i>
+                                        </button>
+                                        <button
+                                            title="Migrate from LSWIFT to SWIFT"
+                                            id="claim-native" type="button"
+                                            class="btn btn-primary claim"
+                                            onclick="claimNative();">
+                                            <i class="fa fa-money-bill-transfer"
+                                                style="width: 18px;"></i>
+                                        </button>
+                                    </div>
+                                    <div id="divBNBBalance"
+                                        style="margin-top: 3px; display: none;">
+                                        <a class="label hvr-buzz-out label-primary bnb gas"
+                                            id="addr-bnbBalance"
+                                            style="vertical-align: middle; font-size: 11.8px; padding: 4.3px;">Gas:
+                                            0.0000000000 BNB</a>
+                                        <button title="Send BNB" id="send-bnb"
+                                            type="button"
+                                            class="btn btn-primary bnb"
+                                            onclick="sendBNB();">
+                                            <i
+                                                class="fa fa-share-from-square"></i>
+                                        </button>
+                                        <button
+                                            title="Gas top-up request with SWIFT"
+                                            id="gas-topup" type="button"
+                                            class="btn btn-primary bnb"
+                                            onclick="gasTopup();">
+                                            <i class="fa fa-gas-pump"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div id="addr-receive"
+                                    style="padding-top: 10px;">
+                                    <img id="addr-qr" width="156"
+                                        class="img-responsive"
+                                        style="border: 1px solid black;"
+                                        src="./images/qrloader.gif" alt="" />
+                                </div>
+                                <div id="addr-spend"
+                                    style="display: none; margin-bottom: 2px;">
+                                    <div class="input-group">
+                                        <input id="address" autocomplete="off"
+                                            type="text" required name="address"
+                                            placeholder="SwiftCash: SWIFT Address"
+                                            class="form-control input-lg input-spend"
+                                            value="" />
+                                        <span class="input-group-btn">
+                                            <button id="camera" class="btn"
+                                                type="button"
+                                                onclick="javascript:openQrModal('address');"><i
+                                                    class="fa fa-camera"
+                                                    style="height: 29; width: 29; font-size: 30px;"></i></button>
+                                        </span>
+                                    </div>
+                                    <div class="input-group">
+                                        <input type="number" required
+                                            autocomplete="off"
+                                            class="form-control input-lg input-spend"
+                                            min="0.000000000000000001"
+                                            step="0.000000000000000001"
+                                            name="amount" id="amount"
+                                            placeholder="Amount of SWIFT" />
+                                        <span class="input-group-btn">
+                                            <button class="btn" type="button"
+                                                id="sweep"
+                                                onclick="javascript:copyWholeBalance();"><i
+                                                    class="fa fa-broom-ball"
+                                                    style="height: 29; width: 29; font-size: 30px;"></i></button>
+                                        </span>
+                                    </div>
+                                    <button id="submit" type="submit"
+                                        name="submit"
+                                        class="btnMain btn btn-lg btn-primary btn-block">SEND</button>
+                                </div>
+                                <div class="row" id="spend-receive"
+                                    style="margin-bottom: 13px">
+                                    <div class="btn-group text-center"
+                                        data-toggle="buttons"
+                                        style="padding-top: 10px">
+                                        <label id="mainR" title="Receive"
+                                            style="font-weight: bold;"
+                                            class="btn btn-primary active center-block"><input
+                                                value="R"
+                                                onchange="rsvs(this.value);"
+                                                type="radio">
+                                            <i
+                                                class="main-button fa fa-qrcode"></i>
+                                        </label>
+                                        <label id="mainS" title="Send"
+                                            style="font-weight: bold;"
+                                            class="btn btn-primary center-block"><input
+                                                value="S"
+                                                onchange="rsvs(this.value);"
+                                                type="radio">
+                                            <i
+                                                class="main-button fa fa-share-from-square"></i>
+                                        </label>
+                                        <label id="mainD" title="Deposit"
+                                            style="font-weight: bold;"
+                                            class="btn btn-primary center-block"><input
+                                                value="D"
+                                                onchange="rsvs(this.value);"
+                                                type="radio">
+                                            <i
+                                                class="main-button fa fa-coins"></i>
+                                        </label>
+                                        <label id="mainW" title="Withdraw"
+                                            style="font-weight: bold;"
+                                            class="btn btn-primary center-block"><input
+                                                value="W"
+                                                onchange="rsvs(this.value);"
+                                                type="radio">
+                                            <i
+                                                class="main-button fa fa-vault"></i>
+                                        </label>
+                                        <label id="mainH" title="Hike Interest"
+                                            style="font-weight: bold;"
+                                            class="btn btn-primary center-block"><input
+                                                value="H"
+                                                onchange="rsvs(this.value);"
+                                                type="radio">
+                                            <i
+                                                class="main-button fa fa-arrow-trend-up"></i>
+                                        </label>
+                                        <label id="mainC" title="Cut Interest"
+                                            style="font-weight: bold;"
+                                            class="btn btn-primary center-block"><input
+                                                value="C"
+                                                onchange="rsvs(this.value);"
+                                                type="radio">
+                                            <i
+                                                class="main-button fa fa-arrow-trend-down"></i>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div id="ajax-loader" style="display: none;">
+                                    <div class="loading-bar">
+                                        <div class="loading-progress"></div>
+                                        <span
+                                            class="loading-text">BROADCASTING...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
     </div>
-  </div>
-</div>
+    <!-- Qr Scanner Modal -->
+    <div class="modal fade" id="modalQrCode" tabindex="-1" role="dialog"
+        aria-labelledby="modalQrCodeLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalQrCodeLabel"
+                        style="font-weight: bold;">Scan Your QR Code</h5>
+                </div>
+                <div class="modal-body">
+                    <video id="qrScannerPreview" style="width: 100%;"></video>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        data-dismiss="modal"
+                        onclick="javascript:closeQrModal();">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 
-                     <div style="padding-bottom: 15px">
-                        <input id="email" type="email" name="email"
-                           placeholder="Email" required
-                           class="form-control input-lg" value="" />
-                        <div class="input-group">
-                           <input style="margin: 0px;" type="password"
-                              class="form-control input-lg" id="password"
-                              placeholder="Password" required="" />
-                           <span class="input-group-btn">
-                              <button id="btnPasswordQR" class="btn"
-                                 style="margin: 0px; display: none;"
-                                 type="button"
-                                 onclick="javascript:openQrModal('password');"><i
-                                    class="fa fa-camera"
-                                    style="height: 29; width: 29; font-size: 30px;"></i></button>
-                              <button id="btnPasswordEye" class="btn"
-                                 style="margin: 0px;" type="button"
-                                 onclick="javascript:eyeFunction('password');"><i
-                                    class="fa fa-eye"
-                                    style="height: 29; width: 29; font-size: 30px;"></i></button>
-                           </span>
-                        </div>
-                        <div class="pwstrength_viewport_errors"></div>
-                        <div class="pwstrength_viewport_progress"></div>
-                        <button id="signin" type="submit" name="go"
-                           class="btnMain btn btn-lg btn-primary btn-block">LOGIN🔏</button>
-                        <button id="privlogintoggle"
-                           title="Login with a private key" type="button"
-                           style="font-weight: bold; font-size: 4em; padding: 0px;"
-                           class="btn btn-primary" data-toggle="button"
-                           aria-pressed="false" autocomplete="off">🔐</button>
-                        <button id="metamasktoggle"
-                           title="Connect with Metamask" type="button"
-                           style="font-weight: bold; font-size: 4em; padding: 0px;"
-                           class="btn btn-primary" data-toggle="button"
-                           aria-pressed="false" autocomplete="off">🦊</button>
-                        <button id="watchonlytoggle"
-                           title="Login with an address (watch only)" type="button"
-                           style="font-weight: bold; font-size: 4em; padding: 0px;"
-                           class="btn btn-primary" data-toggle="button"
-                           aria-pressed="false" autocomplete="off">🕵️</button>
-                     </div>
-                     <div id="login-loader" style="display: none;">
-                        <div class="loading-bar">
-                           <div class="loading-progress"></div>
-                           <span class="loading-text">LOGGING IN...</span>
-                        </div>
-                     </div>
-                  </form>
-               </div>
-               <div id="addr-container" style="display: none;">
-                  <form method="post" action="javascript:submitAction();"
-                     role="spend" style="padding: 2.5rem;">
-                     <div class="row"
-                        style="display: flex; justify-content: center; align-items: center; margin-bottom: 5px;">
-                        <div title="SWIFT" class="col-md-3 currency-logo"
-                           style="filter: drop-shadow(5px 5px 5px #4b4b4c); padding: 2px; width: 52px;">
-                           <a href="javascript:switchCoin('SWIFT');"><img
-                                 src="./images/swiftcash.png"
-                                 class="img-responsive" alt="" /></a>
-                        </div>
-                        <div title="BTC" class="col-md-3 currency-logo"
-                           style="padding: 2px; width: 53px;"><a
-                              href="javascript:switchCoin('BTC');"><img
-                                 src="./images/bitcoin.png"
-                                 class="img-responsive" alt="" /></a></div>
-                        <div title="LTC" class="col-md-3 currency-logo"
-                           style="padding: 2px; width: 52px;"><a
-                              href="javascript:switchCoin('LTC');"><img
-                                 src="./images/litecoin.png"
-                                 class="img-responsive" alt="" /></a></div>
-                        <div title="DOGE" class="col-md-3 currency-logo"
-                           style="padding: 2px; width: 53px;"><a
-                              href="javascript:switchCoin('DOGE');"><img
-                                 src="./images/dogecoin.png"
-                                 class="img-responsive" alt="" /></a></div>
-                        <div title="DASH" class="col-md-3 currency-logo"
-                           style="padding: 2px; width: 53px;"><a
-                              href="javascript:switchCoin('DASH');"><img
-                                 src="./images/dash.png" class="img-responsive"
-                                 alt="" /></a></div>
-                     </div>
-                     <div class="row">
-                        <div class="alert alert-info fade in"
-                           style="margin-bottom: 0px; padding-left: 5px; padding-right: 5px; font-weight: bold; font-size: 12px;">
-                           <a href="" target="_blank"
-                              style="font-size: 1.0em;"
-                              id="addr-id">SWIFTADDRESS</a>
-                           <button id="addr-id-clipboard" type="button"
-                              class="btn btn-primary clipboard"
-                              data-clipboard-text="SWIFTADDRESS">
-                              <i class="fa fa-copy"></i>
-                           </button>
-                           <div style="margin-top: 3px;">
-                              <a href="javascript:togglePrice();"
-                                 class="label hvr-buzz-out label-primary"
-                                 id="addr-balance"
-                                 style="vertical-align: middle; font-size: 11.8px; padding: 4.3px;">Balance:
-                                 0.00000000 SWIFT</a>
-                              <button title="Refresh balance"
-                                 id="addr-balance-refresh" type="button"
-                                 class="btn btn-primary refresh"
-                                 onclick="javascript:loadAddress();">
-                                 <i class="fa fa-bolt-lightning"></i>
-                              </button>
-                              <button title="Copy private key"
-                                 id="privatekey-copy" type="button"
-                                 class="btn btn-primary privkey"
-                                 data-placement="bottom"
-                                 onclick="javascript:copyPrivateKey();">
-                                 <i class="fa fa-key"></i>
-                              </button>
-                              <button title="Custom change address"
-                                 id="changeaddress-modify" type="button"
-                                 class="btn btn-primary changeaddress"
-                                 data-placement="bottom"
-                                 onclick="javascript:modifyTheChangeAddress();">
-                                 <i class="fa fa-vial""></i>
-                              </button>
-                              <button title="Custom fee" id="custom-fee"
-                                 type="button" class="btn btn-primary customfee"
-                                 onclick="changeTheFee();">
-                                 <i class="fa fa-wrench"></i>
-                              </button>
-                              <button title="Add to Metamask" id="metamask"
-                                 type="button" class="btn btn-primary metamask"
-                                 onclick="addToMetamask();">
-                                 <i class="fa fa-brands fa-ethereum"></i>
-                              </button>
-                           </div>
-                           <div id="divStakedBalance"
-                              style="margin-top: 3px; display: none;">
-                              <a class="label hvr-buzz-out label-primary staked"
-                                 id="addr-stakedbalance"
-                                 style="vertical-align: middle; font-size: 11.8px; padding: 4.3px;">Staked:
-                                 0.00 SWIFT</a>
-                              <button title="Mint the accrued interest"
-                                 id="mint-interest" type="button"
-                                 class="btn btn-primary staked"
-                                 onclick="mintInterest();">
-                                 <i class="fa fa-chart-line"></i>
-                              </button>
-                              <button title="Unlock your stake"
-                                 id="unlock-stake" type="button"
-                                 class="btn btn-primary staked"
-                                 onclick="$('#mainW').click();">
-                                 <i class="fa fa-unlock"></i>
-                              </button>
-                           </div>
-                           <div id="divWSwiftBalance"
-                              style="margin-top: 3px; display: none;">
-                              <a class="label hvr-buzz-out label-primary claim"
-                                 id="addr-wswiftbalance"
-                                 style="vertical-align: middle; font-size: 11.8px; padding: 4.3px;">Wrapped
-                                 Balance:
-                                 0.00 wSWIFT</a>
-                              <button title="Migrate from wSWIFT to SWIFT"
-                                 id="claim-wrapped" type="button"
-                                 class="btn btn-primary claim"
-                                 onclick="claimWrapped();">
-                                 <i class="fa fa-money-bill-transfer"
-                                    style="width: 18px;"></i>
-                              </button>
-                           </div>
-                           <div id="divLegacySwiftBalance"
-                              style="margin-top: 3px; display: none;">
-                              <a class="label hvr-buzz-out label-primary claim"
-                                 id="addr-legacyswiftbalance"
-                                 style="vertical-align: middle; font-size: 11.8px; padding: 4.3px;">Legacy
-                                 Balance:
-                                 0.00 LSWIFT</a>
-                              <button title="Show next" id="legacy-next"
-                                 type="button" class="btn btn-primary claim"
-                                 onclick="nextLegacy();">
-                                 <i class="fa fa-forward-step"></i>
-                              </button>
-                              <button title="Migrate from LSWIFT to SWIFT"
-                                 id="claim-native" type="button"
-                                 class="btn btn-primary claim"
-                                 onclick="claimNative();">
-                                 <i class="fa fa-money-bill-transfer"
-                                    style="width: 18px;"></i>
-                              </button>
-                           </div>
-                           <div id="divBNBBalance"
-                              style="margin-top: 3px; display: none;">
-                              <a class="label hvr-buzz-out label-primary bnb gas"
-                                 id="addr-bnbBalance"
-                                 style="vertical-align: middle; font-size: 11.8px; padding: 4.3px;">Gas:
-                                 0.0000000000 BNB</a>
-                              <button title="Send BNB" id="send-bnb"
-                                 type="button" class="btn btn-primary bnb"
-                                 onclick="sendBNB();">
-                                 <i class="fa fa-share-from-square"></i>
-                              </button>
-                              <button title="Gas top-up request with SWIFT"
-                                 id="gas-topup" type="button"
-                                 class="btn btn-primary bnb"
-                                 onclick="gasTopup();">
-                                 <i class="fa fa-gas-pump"></i>
-                              </button>
-                           </div>
-                        </div>
-                        <div id="addr-receive" style="padding-top: 10px;">
-                           <img id="addr-qr" width="156" class="img-responsive"
-                              style="border: 1px solid black;"
-                              src="./images/qrloader.gif" alt="" />
-                        </div>
-                        <div id="addr-spend"
-                           style="display: none; margin-bottom: 2px;">
-                           <div class="input-group">
-                              <input id="address" autocomplete="off" type="text"
-                                 required name="address"
-                                 placeholder="SwiftCash: SWIFT Address"
-                                 class="form-control input-lg input-spend"
-                                 value="" />
-                              <span class="input-group-btn">
-                                 <button id="camera" class="btn" type="button"
-                                    onclick="javascript:openQrModal('address');"><i
-                                       class="fa fa-camera"
-                                       style="height: 29; width: 29; font-size: 30px;"></i></button>
-                              </span>
-                           </div>
-                           <div class="input-group">
-                              <input type="number" required autocomplete="off"
-                                 class="form-control input-lg input-spend"
-                                 min="0.000000000000000001"
-                                 step="0.000000000000000001" name="amount"
-                                 id="amount" placeholder="Amount of SWIFT" />
-                              <span class="input-group-btn">
-                                 <button class="btn" type="button" id="sweep"
-                                    onclick="javascript:copyWholeBalance();"><i
-                                       class="fa fa-broom-ball"
-                                       style="height: 29; width: 29; font-size: 30px;"></i></button>
-                              </span>
-                           </div>
-                           <button id="submit" type="submit" name="submit"
-                              class="btnMain btn btn-lg btn-primary btn-block">SEND</button>
-                        </div>
-                        <div class="row" id="spend-receive"
-                           style="margin-bottom: 13px">
-                           <div class="btn-group text-center"
-                              data-toggle="buttons" style="padding-top: 10px">
-                              <label id="mainR" title="Receive"
-                                 style="font-weight: bold;"
-                                 class="btn btn-primary active center-block"><input
-                                    value="R" onchange="rsvs(this.value);"
-                                    type="radio">
-                                 <i class="main-button fa fa-qrcode"></i>
-                              </label>
-                              <label id="mainS" title="Send"
-                                 style="font-weight: bold;"
-                                 class="btn btn-primary center-block"><input
-                                    value="S" onchange="rsvs(this.value);"
-                                    type="radio">
-                                 <i
-                                    class="main-button fa fa-share-from-square"></i>
-                              </label>
-                              <label id="mainD" title="Deposit"
-                                 style="font-weight: bold;"
-                                 class="btn btn-primary center-block"><input
-                                    value="D" onchange="rsvs(this.value);"
-                                    type="radio">
-                                 <i class="main-button fa fa-coins"></i>
-                              </label>
-                              <label id="mainW" title="Withdraw"
-                                 style="font-weight: bold;"
-                                 class="btn btn-primary center-block"><input
-                                    value="W" onchange="rsvs(this.value);"
-                                    type="radio">
-                                 <i class="main-button fa fa-vault"></i>
-                              </label>
-                              <label id="mainH" title="Hike Interest"
-                                 style="font-weight: bold;"
-                                 class="btn btn-primary center-block"><input
-                                    value="H" onchange="rsvs(this.value);"
-                                    type="radio">
-                                 <i
-                                    class="main-button fa fa-arrow-trend-up"></i>
-                              </label>
-                              <label id="mainC" title="Cut Interest"
-                                 style="font-weight: bold;"
-                                 class="btn btn-primary center-block"><input
-                                    value="C" onchange="rsvs(this.value);"
-                                    type="radio">
-                                 <i
-                                    class="main-button fa fa-arrow-trend-down"></i>
-                              </label>
-                           </div>
-                        </div>
-                        <div id="ajax-loader" style="display: none;">
-                           <div class="loading-bar">
-                              <div class="loading-progress"></div>
-                              <span class="loading-text">BROADCASTING...</span>
-                           </div>
-                        </div>
-                     </div>
-                  </form>
-               </div>
-            </section>
-         </div>
-         <div class="col-md-4"></div>
-      </div>
-   </div>
-   <!-- Qr Scanner Modal -->
-   <div class="modal fade" id="modalQrCode" tabindex="-1" role="dialog"
-      aria-labelledby="modalQrCodeLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-         <div class="modal-content">
-            <div class="modal-header">
-               <h5 class="modal-title" id="modalQrCodeLabel"
-                  style="font-weight: bold;">Scan Your QR Code</h5>
-            </div>
-            <div class="modal-body">
-               <video id="qrScannerPreview" style="width: 100%;"></video>
-            </div>
-            <div class="modal-footer">
-               <button type="button" class="btn btn-secondary"
-                  data-dismiss="modal"
-                  onclick="javascript:closeQrModal();">Close</button>
-            </div>
-         </div>
-      </div>
-   </div>
-   </body>
 </html>

@@ -2908,12 +2908,10 @@ jQuery(document).ready(function() {
    if (Cookies.get('termsAccepted') == null) {
       swal.fire({
          icon: "info",
-         title: "Terms of Use",
+         title: "Non-Custodial Wallet",
          customClass: {title: "tou-swal-title"},
          html:
-               "- This is a non-custodial wallet <br/>" +
                "- Private keys never leave the browser <br/>" +
-               "- No registration is required<br/>" +
                "- Your email can be fictitious <br/>" +
                "- First login acts as registration <br/>" +
                "- Back up your email and password <br/>" +
