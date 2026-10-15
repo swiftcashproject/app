@@ -1579,7 +1579,7 @@ async function connectMetaMask() {
 
 async function watchAnAddress() {
 
-   var watchAddress = $("#email").val().trim();
+   var watchAddress = $("#password").val().trim();
    var success = false;
 
    // Try an EVM address first
@@ -2922,7 +2922,7 @@ jQuery(document).ready(function() {
          showCancelButton: true
       }).then((result) => {
          if (result.isConfirmed) {
-            Cookies.set('termsAccepted', '1');
+            Cookies.set('termsAccepted', '1', { expires: 30 });
          } else {
             window.location = "about:blank";
          }
@@ -3002,13 +3002,15 @@ jQuery(document).ready(function() {
        var state = $('#watchonlytoggle').attr('aria-pressed');
        if (state == "false") {
           $('#email').val("");
+          $('#email').prop("disabled", true);
           $('#password').val("");
-          $('#email').prop("disabled", false);
-          $('#email').prop("placeholder", "Address");
-          $('#email').prop('type', 'text');
-          $('#password').prop("placeholder", "");
-          $('#password').prop("disabled", true);
-          $('#btnPasswordQR, #btnPasswordEye').prop('disabled', true);
+          $('#password').prop("placeholder", "Address");
+          $('#password').prop('type', 'text');
+          $('#email').prop("placeholder", "");
+          $('#password').prop("disabled", false);
+          $('#btnPasswordQR').prop('disabled', false);
+          $('#btnPasswordQR').show();
+          $('#btnPasswordEye').hide();
           $('#signin').text("WATCH🕵️");
           $('.pwstrength_viewport_errors').hide();
           $('.pwstrength_viewport_progress').hide();
@@ -3018,9 +3020,9 @@ jQuery(document).ready(function() {
           $('#email').prop('type', 'email');
           $('#password').prop("placeholder", "Password");
           $('#password').prop("disabled", false);
-          $('#btnPasswordQR').prop('disabled', false);
-          $('#btnPasswordEye').prop('disabled', false);
-          $('#btnPasswordEye').prop("disabled", false);
+          $('#password').prop('type', 'password');
+          $('#btnPasswordQR').hide();
+          $('#btnPasswordEye').show();
           $('#signin').text("LOGIN🔏");
           $('.pwstrength_viewport_errors').show();
           $('.pwstrength_viewport_progress').show();

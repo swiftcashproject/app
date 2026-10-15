@@ -49,6 +49,7 @@ body {
    padding-right: 0 !important;
    color: var(--sc-text);
    font-family: Oxanium, system-ui, sans-serif;
+   font-weight: 500;
    background-color: var(--sc-bg);
    background-image: linear-gradient(rgba(5, 10, 20, 0.58), rgba(5, 10, 20, 0.78));
    background-position: center center;
@@ -164,7 +165,6 @@ fieldset[disabled] .form-control {
 .input-spend {
    font-family: 'Share Tech Mono', Oxanium, monospace;
    font-size: 1.25rem !important;
-   font-weight: bold;
    height: 43px;
 }
 
@@ -395,6 +395,10 @@ button {
 
 .swal2-radio {
    display: grid !important;
+}
+
+.swal2-html-container {
+   font-weight: 500 !important;
 }
 
 /* ==========================================================
