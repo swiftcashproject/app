@@ -471,6 +471,25 @@ function refreshLegacyClaims() {
    $("#divLegacySwiftBalance").show();
 }
 
+function shortAddress(address) {
+   return address.length > 35
+      ? address.substring(0, 16) + "..." + address.slice(-16)
+      : address;
+}
+
+async function confirmAction(title, message) {
+   const result = await Swal.fire({
+      icon: "question",
+      title: title,
+      html: message,
+      showCancelButton: true,
+      confirmButtonText: "Confirm",
+      cancelButtonText: "Cancel"
+   });
+
+   return result.isConfirmed;
+}
+
 function nextLegacy() {
    if (claims.length <= 1) {
       return;
@@ -619,32 +638,33 @@ function sendBNB() {
       signer = signer.connect(provider);
    }
 
-   Swal.fire({
-      background: "#ffffff",
-      title: "Send BNB",
-      iconHtml: '<img src="images/bnb.png" style="width:45px; height:45px;" alt="BNB">',
-      html: '<input id="bnb-recipient" class="swal2-input" ' +
-         'placeholder="BNB Address" style="width:calc(100% - 6px); margin: 10 3 3;">' +
+  Swal.fire({
+     background: "#16181e",
+     title: "Send BNB",
+     iconHtml: '<img src="images/bnb.png" style="width:45px; height:45px;" alt="BNB">',
+     html: '<input id="bnb-recipient" class="swal2-input" ' +
+            'placeholder="BNB Address" style="width:100%; margin-bottom: 5px !important;">' +
 
-         '<div style="display:flex; align-items:center; gap:5px;">' +
+            '<div style="display:flex; align-items:center; gap:5px;">' +
 
-         '<input id="bnb-amount" class="swal2-input" ' +
-         'placeholder="Amount of BNB" type="text" ' +
-         'step="any" style="width:100%; margin: 10 3 3;">' +
+            '<input id="bnb-amount" class="swal2-input" ' +
+            'placeholder="Amount of BNB" type="text" ' +
+            'step="any" style="width:100%;">' +
 
-         '<button class="btn" style="margin: 5 1 5 0; background: #0c1526;" type="button" id="bnb-max">' +
-         '<i class="fa fa-broom-ball" ' +
-         'style="height:27px; width:27px; font-size:30px;"></i>' +
-         '</button>' +
+            '<button class="btn" type="button" id="bnb-max">' +
+            '<i class="fa fa-broom-ball" ' +
+            'style="height:27px; width:27px; font-size:30px;"></i>' +
+            '</button>' +
 
-         '</div>' +
+            '</div>' +
 
-         '<div id="bnb-loader" style="display:none; margin-top:15px;">' +
-         '<div class="loading-bar" style="background: #111e31">' +
-         '<div class="loading-progress"></div>' +
-         '<span class="loading-text">SENDING BNB...</span>' +
-         '</div>' +
-         '</div>',
+            /* Loader container: hidden by default, shown during transaction execution */
+            '<div id="bnb-loader" style="display:none; margin-top:15px;">' +
+            '<div class="loading-bar">' +
+            '<div class="loading-progress"></div>' +
+            '<span class="loading-text">SENDING BNB...</span>' +
+            '</div>' +
+            '</div>',
 
       showCancelButton: true,
       confirmButtonText: "Send",
@@ -652,14 +672,9 @@ function sendBNB() {
 
       didOpen: function() {
 
+         // Live network gas estimation for the broom (max) button
          $("#bnb-max").on("click", async function() {
-
             try {
-
-               var balance = await provider.getBalance(
-                  wallet.address
-               );
-
                var feeData = await provider.getFeeData();
 
                if (!feeData.gasPrice) {
@@ -667,28 +682,21 @@ function sendBNB() {
                }
 
                var gasLimit = 21000n;
+               var gasCost = gasLimit * feeData.gasPrice;
 
-               var gasCost =
-                  gasLimit * feeData.gasPrice;
-
-               if (balance <= gasCost) {
+               if (bnbBalance <= gasCost) {
                   $("#bnb-amount").val("0");
                   return;
                }
 
-               var maxAmount = balance - gasCost;
-
-               $("#bnb-amount").val(
-                  ethers.formatEther(maxAmount)
-               );
+               var maxAmount = bnbBalance - gasCost;
+               $("#bnb-amount").val(ethers.formatEther(maxAmount));
 
             } catch (error) {
-
                console.log(error);
-
                alertError(
                   "Unable to calculate maximum!",
-                  "The BNB balance or gas cost could not be determined."
+                  "The gas cost could not be determined from the network."
                );
             }
          });
@@ -703,37 +711,48 @@ function sendBNB() {
             $("#bnb-amount").val().trim();
 
          if (!ethers.isAddress(recipient)) {
-
-            Swal.showValidationMessage(
-               "Please enter a valid BNB address."
-            );
-
+            Swal.showValidationMessage("Please enter a valid BNB address.");
             return false;
          }
 
          if (!amount || Number(amount) <= 0) {
-
-            Swal.showValidationMessage(
-               "Please enter a valid BNB amount."
-            );
-
+            Swal.showValidationMessage("Please enter a valid BNB amount.");
             return false;
          }
 
+         // --- Simple Initial Balance Check (No gas buffer reduction) ---
          try {
+            var valueWei = ethers.parseEther(amount);
 
-            // Disable buttons while sending.
+            if (valueWei > bnbBalance) {
+               Swal.showValidationMessage("Insufficient BNB balance.");
+               return false;
+            }
+         } catch (err) {
+            Swal.showValidationMessage("Balance validation failed.");
+            return false;
+         }
+         // -------------------------------------------------------------
+
+         /*if (!await confirmAction(
+            "Confirm Transaction!",
+            "Sending " + amount + " BNB to:" +
+            "<br><br>" + shortAddress(recipient)
+         )) return false;*/
+       
+         try {
+            // Disable buttons while sending & show loader explicitly
             Swal.getConfirmButton().disabled = true;
             Swal.getCancelButton().disabled = true;
-
-            // Show loader.
             $("#bnb-loader").show();
 
             var value = ethers.parseEther(amount);
+            var feeData = await provider.getFeeData();
+            var gasPrice = feeData.gasPrice;
 
-            var balance = await provider.getBalance(
-               wallet.address
-            );
+            if (!gasPrice) {
+               throw new Error("Could not determine gas price.");
+            }
 
             var gasLimit = await provider.estimateGas({
                from: wallet.address,
@@ -741,50 +760,27 @@ function sendBNB() {
                value: value
             });
 
-            var feeData = await provider.getFeeData();
-
-            if (!feeData.gasPrice) {
-               throw new Error("Could not determine gas price.");
-            }
-
-            var gasCost =
-               gasLimit * feeData.gasPrice;
-
-            if (value + gasCost > balance) {
-
-               $("#bnb-loader").hide();
-
-               Swal.getConfirmButton().disabled = false;
-               Swal.getCancelButton().disabled = false;
-
-               Swal.showValidationMessage(
-                  "Insufficient BNB for the amount and gas fee."
-               );
-
-               return false;
-            }
-
             var tx = await signer.sendTransaction({
                to: recipient,
                value: value,
                gasLimit: gasLimit,
-               gasPrice: feeData.gasPrice
+               gasPrice: gasPrice
             });
 
             return await tx.wait();
 
          } catch (error) {
-
             console.log(error);
 
+            // Hide loader and re-enable buttons on error
             $("#bnb-loader").hide();
+            if (Swal.getConfirmButton()) Swal.getConfirmButton().disabled = false;
+            if (Swal.getCancelButton()) Swal.getCancelButton().disabled = false;
 
-            Swal.getConfirmButton().disabled = false;
-            Swal.getCancelButton().disabled = false;
-
-            Swal.showValidationMessage(
-               "Transaction failed: " +
-               (error.shortMessage || error.message)
+            // Use alertError popup for transaction execution failures
+            alertError(
+               "Something went wrong!",
+               error.shortMessage || error.message
             );
 
             return false;
@@ -799,10 +795,10 @@ function sendBNB() {
       var tx = result.value;
 
       alertSuccess(
-               "BNB sent!",
-               "Transaction was broadcasted successfully.",
-               tx.hash
-            );
+         "BNB sent!",
+         "Transaction was broadcasted successfully.",
+         tx.hash
+      );
 
       refresh();
 
@@ -2144,7 +2140,7 @@ function rsvs(rval) {
          $("#submit").html("DEPOSIT");
          $("#addr-spend").show();
          $("#addr-receive").hide();
-         $("#address").val('NON-CUSTODIAL SWIFTCASH BANK 🏦');
+         $("#address").val('The Decentralized SwiftCash Bank 🏦');
          $("#address").attr("disabled", "disabled");
          $("#camera").attr("disabled", "disabled");
 
@@ -2157,7 +2153,7 @@ function rsvs(rval) {
          $("#submit").html("WITHDRAW");
          $("#addr-spend").show();
          $("#addr-receive").hide();
-         $("#address").val('NON-CUSTODIAL SWIFTCASH BANK 🏦');
+         $("#address").val('The Decentralized SwiftCash Bank 🏦');
          $("#address").attr("disabled", "disabled");
          $("#camera").attr("disabled", "disabled");
 
@@ -2200,7 +2196,7 @@ function rsvs(rval) {
 
 var tx;
 
-function spendUTXO() {
+async function spendUTXO() {
    var amount = Number($("#amount").val());
    var FEE = PARAMS[CURRENT_COIN].txFee;
 
@@ -2209,14 +2205,20 @@ function spendUTXO() {
       return;
    }
 
-   var address = $("#address").val();
+   var toAddress = $("#address").val();
 
    try {
-      PARAMS[CURRENT_COIN].coinjs.address.toOutputScript(address, PARAMS[CURRENT_COIN].network);
+      PARAMS[CURRENT_COIN].coinjs.address.toOutputScript(toAddress, PARAMS[CURRENT_COIN].network);
    } catch (e) {
       alertError("Invalid address!", "Please enter a valid " + CURRENT_COIN + " address.");
       return;
    }
+   
+   if (!await confirmAction(
+       "Confirm Transaction!",
+       "Sending " + amount + " " + CURRENT_COIN + " to:" +
+       "<br><br>" + shortAddress(toAddress)
+   )) return;
 
    $('#address').prop("disabled", true);
    $('#amount').prop("disabled", true);
@@ -2232,7 +2234,7 @@ function spendUTXO() {
       );
    }
 
-   tx.addOutput(address, Math.ceil(amount * 100000000));
+   tx.addOutput(toAddress, Math.ceil(amount * 100000000));
 
    var change = SWIFT(balance - amount - FEE);
 
@@ -2264,7 +2266,7 @@ function spendUTXO() {
             USD = false;
             usdBalance = false;
 
-            if (change > 0 && changeAddress == address) {
+            if (change > 0 && changeAddress == toAddress) {
                var p1 = PARAMS[CURRENT_COIN].unspentTxid;
                var p2 = PARAMS[CURRENT_COIN].unspentOutput;
                var p3 = PARAMS[CURRENT_COIN].unspentValue;
@@ -2314,12 +2316,12 @@ function spendUTXO() {
    });
 }
 
-function spendERC20() {
+async function spendERC20() {
    var amount = $("#amount").val();
-   var address = $("#address").val();
+   var toAddress = $("#address").val();
 
    // Validate the address
-   if (!ethers.isAddress(address)) {
+   if (!ethers.isAddress(toAddress)) {
       alertError("Invalid address!", "Please enter a valid " + CURRENT_COIN + " address.");
       return;
    }
@@ -2349,6 +2351,12 @@ function spendERC20() {
       return;
    }
 
+   if (!await confirmAction(
+       "Confirm Transaction!",
+       "Sending " + amount + " " + CURRENT_COIN + " to:" +
+       "<br><br>" + shortAddress(toAddress)
+   )) return;
+   
    // Disable the elements in the form
    $('#address').prop("disabled", true);
    $('#amount').prop("disabled", true);
@@ -2372,7 +2380,7 @@ function spendERC20() {
       signer
    );
 
-   contract.transfer(address, tokenAmount)
+   contract.transfer(toAddress, tokenAmount)
       .then(function(tx) {
 
          return tx.wait().then(function() {
@@ -2416,7 +2424,7 @@ function spendERC20() {
       });
 }
 
-function deposit() {
+async function deposit() {
    var amount = $("#amount").val();
 
    var tokenAmount;
@@ -2444,6 +2452,12 @@ function deposit() {
       return;
    }
 
+   if (!await confirmAction(
+       "Confirm Transaction!",
+       "Depositing " + amount + " SWIFT to:" +
+       "<br><br>" + "The Decentralized SwiftCash Bank 🏦"
+   )) return false;
+ 
    $('#amount').prop("disabled", true);
    $('#submit').prop("disabled", true);
    $('#ajax-loader').show();
@@ -2495,7 +2509,7 @@ function deposit() {
       });
 }
 
-function withdraw() {
+async function withdraw() {
    var amount = $("#amount").val();
 
    var tokenAmount;
@@ -2525,6 +2539,12 @@ function withdraw() {
       return;
    }
 
+     if (!await confirmAction(
+         "Confirm Transaction!",
+         "Withdrawing " + amount + " SWIFT from:" +
+         "<br><br>" + "The Decentralized SwiftCash Bank 🏦"
+     )) return false;
+ 
    $('#amount').prop("disabled", true);
    $('#submit').prop("disabled", true);
    $('#ajax-loader').show();
@@ -2673,7 +2693,7 @@ function updateAdjustmentPower() {
       });
 }
 
-function adjustInterest(action) {
+async function adjustInterest(action) {
 
    var contract = getSwiftContract(wallet);
 
@@ -2691,7 +2711,7 @@ function adjustInterest(action) {
    }
 
    contract.canAdjustInterestRate(address)
-      .then(function(eligible) {
+      .then(async function(eligible) {
 
          var title =
             action === "hike" ?
@@ -2706,6 +2726,13 @@ function adjustInterest(action) {
             );
             return;
          }
+
+         const cText = action == "hike"? "Hiking": "Cutting";
+         if (!await confirmAction(
+            "Confirm Transaction!",
+            cText + " the interest rate by:" +
+            "<br><br>" + $('#address').val().substr(12)
+         )) return;
 
          $('#submit').prop("disabled", true);
          $('#ajax-loader').show();
