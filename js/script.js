@@ -1427,14 +1427,10 @@ function switchCoinNow(whichCoin) {
    CURRENT_COIN = whichCoin;
 
    var cLogos = document.getElementsByClassName("currency-logo");
-   for (i = 0; i < cLogos.length; i++) {
-      var title = cLogos[i].title;
 
-      if (title != whichCoin) {
-         cLogos[i].style.filter = "none";
-      } else {
-         cLogos[i].style.filter = "drop-shadow(5px 5px 5px #4b4b4c)";
-      }
+   for (var i = 0; i < cLogos.length; i++) {
+      cLogos[i].classList.toggle("selected", cLogos[i].dataset.coin === whichCoin);
+      cLogos[i].style.filter = "";
    }
 
    if (!METAMASK_MODE && !WATCHONLY_MODE) {

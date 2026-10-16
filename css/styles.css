@@ -715,12 +715,16 @@ button {
 /* ==========================================================
    Logos, Icons & Socials
    ========================================================== */
+
+
+/* Currency logo */
 .currency-logo {
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   min-height: 48px;
-   transition: filter 0.18s ease, transform 0.18s ease;
+   cursor: pointer;
+   border-radius: 10px;
+   transform: translateY(0) scale(1);
+   transition:
+      transform 0.25s ease,
+      filter 0.25s ease;
 }
 
 .currency-logo img {
@@ -730,10 +734,76 @@ button {
    object-fit: contain;
 }
 
+/* Hover: fast pop and bounce */
 .currency-logo:hover {
-   filter: drop-shadow(0 0 8px rgba(104, 173, 255, 0.42)) !important;
-   transform: translateY(-1px);
+   animation: coin-pop 0.38s cubic-bezier(0.2, 1.6, 0.4, 1);
+   transform: translateY(-5px) scale(1.16);
+   filter: drop-shadow(0 0 10px rgba(80, 160, 255, 0.9));
 }
+
+/* Selected: persistent blue glow, no border */
+.currency-logo.selected {
+   filter:
+      drop-shadow(0 0 6px rgba(80, 160, 255, 0.8))
+      drop-shadow(0 0 13px rgba(55, 130, 255, 0.4));
+   animation: coin-glow 2.5s ease-in-out infinite;
+}
+
+/* Selected + hover: brighter glow and same bounce */
+.currency-logo.selected:hover {
+   animation: coin-pop 0.38s cubic-bezier(0.2, 1.6, 0.4, 1);
+   transform: translateY(-5px) scale(1.16);
+   filter:
+      drop-shadow(0 0 10px rgba(80, 160, 255, 1))
+      drop-shadow(0 0 18px rgba(55, 130, 255, 0.55));
+}
+
+/* Quick pop-and-bounce animation */
+@keyframes coin-pop {
+   0% {
+      transform: translateY(0) scale(1);
+   }
+   45% {
+      transform: translateY(-7px) scale(1.2);
+   }
+   75% {
+      transform: translateY(-3px) scale(1.13);
+   }
+   100% {
+      transform: translateY(-5px) scale(1.16);
+   }
+}
+
+@keyframes coin-glow {
+   0%, 100% {
+      filter:
+         drop-shadow(0 0 4px rgba(80, 160, 255, 0.55))
+         drop-shadow(0 0 9px rgba(55, 130, 255, 0.2));
+   }
+
+   50% {
+      filter:
+         drop-shadow(0 0 7px rgba(80, 160, 255, 0.85))
+         drop-shadow(0 0 15px rgba(55, 130, 255, 0.4));
+   }
+}
+
+/* Accessibility: respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+   .currency-logo,
+   .currency-logo:hover,
+   .currency-logo.selected,
+   .currency-logo.selected:hover {
+      animation: none;
+      transition: none;
+   }
+
+   .currency-logo:hover,
+   .currency-logo.selected:hover {
+      transform: none;
+   }
+}
+
 
 .logo-wrapper {
    display: flex;
