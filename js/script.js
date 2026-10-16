@@ -179,11 +179,11 @@ const WSWIFT_ABI = [
 const GAS_PRICE = 0.1; // Gwei
 
 const GAS_LIMIT = {
-    transfer: 43000,
+    transfer: 50000,
     deposit: 150000,
-    withdraw: 65000,
-    adjustInterest: 120000,
-    mintInterest: 70000
+    withdraw: 150000,
+    adjustInterest: 130000,
+    mintInterest: 80000
 };
 
 function estimateGasFee(transactionType) {
@@ -1987,10 +1987,13 @@ function _hideTooltip(classId) {
 
 function modifyTheChangeAddress() {
    Swal.fire({
+      icon: "question",
       inputValue: changeAddress,
-      title: "Custom Change Address",
+      title: "Settings",
+      text: "Custom Change Address:",
       input: "text",
       showCancelButton: true,
+      confirmButtonText: "Apply"
    }).then((result) => {
       if (result.isConfirmed)
          try {
@@ -2009,10 +2012,13 @@ function changeTheFee() {
    var maxFee = PARAMS[CURRENT_COIN].maxFee
    var txFee = PARAMS[CURRENT_COIN].txFee;
    Swal.fire({
+      icon: "question",
       inputValue: txFee,
-      title: "Custom Fee",
+      title: "Settings",
+      text: "Custom Fee:",
       input: "text",
       showCancelButton: true,
+      confirmButtonText: "Apply"
    }).then((result) => {
       if (result.isConfirmed) {
          var cFee = Number(result.value);
