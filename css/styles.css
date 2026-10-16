@@ -3,12 +3,13 @@
 /* ==========================================================
    SweetAlert2 Dark Theme
    ========================================================== */
+/* Charcoal Obsidian Popup */
 .swal2-popup {
-  background-color: #0c1526 !important;
+  background-color: #16181e !important;
   color: #e2e8f0 !important;
-  border: 1px solid #1e293b !important;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  border: 1px solid #2d313e !important;
+  border-radius: 14px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8) !important;
 }
 
 /* Title */
@@ -16,44 +17,97 @@
   color: #ffffff !important;
 }
 
-/* Content / HTML text */
+/* Body Text */
 .swal2-popup .swal2-html-container {
-  color: #94a3b8 !important;
-}
-
-/* Close button */
-.swal2-popup .swal2-close {
-  color: #94a3b8 !important;
-}
-.swal2-popup .swal2-close:hover {
-  color: #ffffff !important;
+  color: #a0aec0 !important;
 }
 
 /* Confirm Button */
 .swal2-popup .swal2-confirm {
-  background-color: #3b82f6 !important;
+  background-color: #2563eb !important;
   color: #ffffff !important;
+  border-radius: 8px !important;
 }
 
 /* Cancel Button */
 .swal2-popup .swal2-cancel {
-  background-color: #ef4444 !important;
+  background-color: #e11d48 !important;
   color: #ffffff !important;
+  border-radius: 8px !important;
 }
 
-/* Input fields */
+/* Form Inputs inside Modal */
 .swal2-popup .swal2-input,
 .swal2-popup .swal2-textarea,
 .swal2-popup .swal2-select {
-  background-color: #111e38 !important;
+  background-color: #0c1526 !important;
   color: #ffffff !important;
-  border: 1px solid #334155 !important;
+  border: 1px solid #2d313e !important;
 }
 
-.swal2-popup .swal2-input:focus,
-.swal2-popup .swal2-textarea:focus {
+/* SweetAlert Validation Error Box */
+.swal2-validation-message {
+  background-color: #0c1526 !important; /* Deep navy inset background */
+  color: #f87171 !important;           /* Soft red error text */
+  border: 1px solid #2d313e !important;   /* Charcoal border */
+  border-radius: 8px !important;
+  font-weight: 500;
+}
+
+/* 1. Align the amount input and max button side-by-side cleanly */
+.swal2-popup .swal2-input {
+  box-sizing: border-box;
+}
+
+/* Target the flex container holding the amount input and the max button */
+div[style*="display:flex"] {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  margin: 0 !important;
+}
+
+/* Ensure the amount input takes up the remaining space uniformly */
+#bnb-recipient.swal2-input,
+#bnb-amount.swal2-input {
+  margin: 0 !important;
+  border-radius: 9px;
+  height: 46px !important; /* Match standard input height */
+  font-size: 12.5px;
+}
+
+/* 2. Style and scale the max (broom) button to match the input height */
+#bnb-max.btn {
+  height: 46px !important;
+  min-width: 46px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  border: 1px solid #2d313e;
+  border-radius: 9px !important;
+  margin: 5px 1px 5px 0;
+  background: #0c1526;
+  color: #ffffff; 
+}
+
+/* 3. Scale down the broom icon so it sits proportionally inside the button */
+#bnb-max .fa-broom-ball {
+  font-size: 18px !important; /* Reduced from 30px to fit properly */
+  height: auto !important;
+  width: auto !important;
+}
+
+/* 4. Tune the input background if you want a deeper contrast against #16181e */
+.swal2-popup .swal2-input {
+  background-color: #0c1526 !important; /* Deep navy to match your theme base */
+  color: #e2e8f0 !important;
+  border: 1px solid #2d313e !important;
+  box-shadow: none !important;
+}
+
+.swal2-popup .swal2-input:focus {
   border-color: #3b82f6 !important;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
 }
 
 /* ==========================================================

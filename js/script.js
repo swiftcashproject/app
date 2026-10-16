@@ -2353,7 +2353,7 @@ async function spendERC20() {
 
    if (!await confirmAction(
        "Confirm Transaction!",
-       "Sending " + amount + " " + CURRENT_COIN + " to:" +
+       "Sending ~" + Number(amount).toLocaleString() + " " + CURRENT_COIN + " to:" +
        "<br><br>" + shortAddress(toAddress)
    )) return;
    
@@ -2454,7 +2454,7 @@ async function deposit() {
 
    if (!await confirmAction(
        "Confirm Transaction!",
-       "Depositing " + amount + " SWIFT to:" +
+       "Depositing ~" + Number(amount).toLocaleString() + " SWIFT to:" +
        "<br><br>" + "The Decentralized SwiftCash Bank 🏦"
    )) return false;
  
@@ -2539,11 +2539,11 @@ async function withdraw() {
       return;
    }
 
-     if (!await confirmAction(
-         "Confirm Transaction!",
-         "Withdrawing " + amount + " SWIFT from:" +
-         "<br><br>" + "The Decentralized SwiftCash Bank 🏦"
-     )) return false;
+    if (!await confirmAction(
+        "Confirm Transaction!",
+        "Withdrawing ~" + Number(amount).toLocaleString() + " SWIFT from:" +
+        "<br><br>" + "The Decentralized SwiftCash Bank 🏦"
+    )) return false;
  
    $('#amount').prop("disabled", true);
    $('#submit').prop("disabled", true);
