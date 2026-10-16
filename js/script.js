@@ -632,15 +632,15 @@ function sendBNB() {
          'placeholder="Amount of BNB" type="text" ' +
          'step="any" style="width:100%; margin: 10 3 3;">' +
 
-         '<button class="btn" style="margin: 10 3 3; background: #fff" type="button" id="bnb-max">' +
+         '<button class="btn" style="margin: 5 1 5 0; background: #0c1526;" type="button" id="bnb-max">' +
          '<i class="fa fa-broom-ball" ' +
-         'style="height:29px; width:29px; font-size:30px;"></i>' +
+         'style="height:27px; width:27px; font-size:30px;"></i>' +
          '</button>' +
 
          '</div>' +
 
          '<div id="bnb-loader" style="display:none; margin-top:15px;">' +
-         '<div class="loading-bar" style="background: #fff">' +
+         '<div class="loading-bar" style="background: #111e31">' +
          '<div class="loading-progress"></div>' +
          '<span class="loading-text">SENDING BNB...</span>' +
          '</div>' +
@@ -3823,4 +3823,3 @@ $(document).ready(function() {
     requestAnimationFrame(animate);
 })();    
 });
-

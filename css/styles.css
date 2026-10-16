@@ -1,5 +1,60 @@
 @CHARSET "UTF-8";
 
+/* ==========================================================
+   SweetAlert2 Dark Theme
+   ========================================================== */
+.swal2-popup {
+  background-color: #0c1526 !important;
+  color: #e2e8f0 !important;
+  border: 1px solid #1e293b !important;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+/* Title */
+.swal2-popup .swal2-title {
+  color: #ffffff !important;
+}
+
+/* Content / HTML text */
+.swal2-popup .swal2-html-container {
+  color: #94a3b8 !important;
+}
+
+/* Close button */
+.swal2-popup .swal2-close {
+  color: #94a3b8 !important;
+}
+.swal2-popup .swal2-close:hover {
+  color: #ffffff !important;
+}
+
+/* Confirm Button */
+.swal2-popup .swal2-confirm {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+}
+
+/* Cancel Button */
+.swal2-popup .swal2-cancel {
+  background-color: #ef4444 !important;
+  color: #ffffff !important;
+}
+
+/* Input fields */
+.swal2-popup .swal2-input,
+.swal2-popup .swal2-textarea,
+.swal2-popup .swal2-select {
+  background-color: #111e38 !important;
+  color: #ffffff !important;
+  border: 1px solid #334155 !important;
+}
+
+.swal2-popup .swal2-input:focus,
+.swal2-popup .swal2-textarea:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+}
 
 /* ==========================================================
    CSS Fonts
