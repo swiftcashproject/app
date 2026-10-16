@@ -31,7 +31,7 @@
 
 /* Cancel Button */
 .swal2-popup .swal2-cancel {
-  background-color: #e11d48 !important;
+  background-color: #4a4849 !important;
   color: #ffffff !important;
   border-radius: 8px !important;
 }
@@ -293,7 +293,7 @@ form > div {
 fieldset[disabled] .form-control {
    color: #a2aec0;
    cursor: not-allowed;
-   background-color: #101010;
+   background-color: #0f1420;
    border-color: #354155;
    opacity: 1;
 }
