@@ -825,7 +825,7 @@ async function gasTopup() {
 
       Swal.fire({
          icon: "info",
-         title: "Gas Top-Up Request!",
+         title: "Gas Top-Up Request",
          text: "You can only request a top-up if your BNB balance is less than " + (params.gasTopUp / 10).toString() + "."
       });
 
@@ -865,7 +865,7 @@ async function gasTopup() {
 
    var confirmed = await Swal.fire({
 
-      icon: "info",
+      icon: "question",
 
       title: "Gas Top-Up Request",
 
@@ -1038,7 +1038,7 @@ async function sendPermitByEmail(permit) {
 
    var result = await Swal.fire({
 
-      icon: "info",
+      icon: "question",
 
       title: "Gas Top-Up Request",
 
@@ -2060,9 +2060,9 @@ function togglePrice() {
 
 function copyPrivateKey() {
    Swal.fire({
-      icon: "info",
+      icon: "question",
       inputValue: "No",
-      title: "Copy Private Key?",
+      title: "Copy Private Key!",
       text: "This operation will copy your private key to the clipboard. " +
          "Your private key is very important and anyone who has it will be able to spend from your account. " +
          "You should never share your private key with anyone. " +
@@ -2134,7 +2134,7 @@ function rsvs(rval) {
          $("#submit").html("DEPOSIT");
          $("#addr-spend").show();
          $("#addr-receive").hide();
-         $("#address").val('The Decentralized SwiftCash Bank 🏦');
+         $("#address").val('Non-Custodial SwiftCash Bank 🏦');
          $("#address").attr("disabled", "disabled");
          $("#camera").attr("disabled", "disabled");
 
@@ -2147,7 +2147,7 @@ function rsvs(rval) {
          $("#submit").html("WITHDRAW");
          $("#addr-spend").show();
          $("#addr-receive").hide();
-         $("#address").val('The Decentralized SwiftCash Bank 🏦');
+         $("#address").val('Non-Custodial SwiftCash Bank 🏦');
          $("#address").attr("disabled", "disabled");
          $("#camera").attr("disabled", "disabled");
 
@@ -2449,7 +2449,7 @@ async function deposit() {
    if (!await confirmAction(
        "Confirm Transaction!",
        "Depositing ~" + Number(amount).toLocaleString() + " SWIFT to:" +
-       "<br><br>" + "The Decentralized SwiftCash Bank 🏦"
+       "<br><br>" + "Non-Custodial SwiftCash Bank 🏦"
    )) return false;
  
    $('#amount').prop("disabled", true);
@@ -2536,7 +2536,7 @@ async function withdraw() {
     if (!await confirmAction(
         "Confirm Transaction!",
         "Withdrawing ~" + Number(amount).toLocaleString() + " SWIFT from:" +
-        "<br><br>" + "The Decentralized SwiftCash Bank 🏦"
+        "<br><br>" + "Non-Custodial SwiftCash Bank 🏦"
     )) return false;
  
    $('#amount').prop("disabled", true);
@@ -2598,7 +2598,7 @@ async function withdraw() {
 async function mintInterest() {
 
    const result = await Swal.fire({
-      icon: "info",
+      icon: "question",
       title: "Mint Interest!",
       text: "Accrued interest is automatically minted with every deposit and withdrawal. " +
          "Are you sure you want to continue?",
