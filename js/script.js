@@ -212,7 +212,7 @@ function getCustomErrorMessage(error) {
                return "You don't have any staking shares.";
 
             case "NotEligibleToAdjustInterestRate":
-               return "You are not eligible to adjust the interest rate.";
+               return "Your address is currently not eligible to adjust the interest rate.";
 
             case "MaximumRateReached":
                return "The maximum interest rate has been reached.";
@@ -642,12 +642,12 @@ function sendBNB() {
      background: "#16181e",
      title: "Send BNB",
      iconHtml: '<img src="images/bnb.png" style="width:45px; height:45px;" alt="BNB">',
-     html: '<input id="bnb-recipient" class="swal2-input" ' +
+     html: '<input id="bnb-recipient" autocomplete="off" class="swal2-input" ' +
             'placeholder="BNB Address" style="width:100%; margin-bottom: 5px !important;">' +
 
             '<div style="display:flex; align-items:center; gap:5px;">' +
 
-            '<input id="bnb-amount" class="swal2-input" ' +
+            '<input id="bnb-amount" autocomplete="off" class="swal2-input" ' +
             'placeholder="Amount of BNB" type="text" ' +
             'step="any" style="width:100%;">' +
 
@@ -733,12 +733,6 @@ function sendBNB() {
             return false;
          }
          // -------------------------------------------------------------
-
-         /*if (!await confirmAction(
-            "Confirm Transaction!",
-            "Sending " + amount + " BNB to:" +
-            "<br><br>" + shortAddress(recipient)
-         )) return false;*/
        
          try {
             // Disable buttons while sending & show loader explicitly
@@ -2680,7 +2674,7 @@ function updateAdjustmentPower() {
    contract.adjustmentPowerOf(address)
       .then(function(power) {
 
-         var powerPercent = ethers.formatUnits(power, 25);
+         var powerPercent = Number(ethers.formatUnits(power, 25)).toFixed(10);
 
          if (powerPercent > 0) $("#address").val(
             "Your Power: " +

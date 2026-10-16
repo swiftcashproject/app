@@ -199,7 +199,7 @@ body {
 
 form {
    margin: 0;
-   padding: 22px;
+   padding: 1rem 2.5rem;
    color: var(--sc-text);
    background: var(--sc-panel);
    border: 0;
@@ -1025,7 +1025,7 @@ ul.social_icon li a:hover {
    }
 
    form {
-      padding: 17px;
+      padding: 1rem 2.5rem;
    }
 
    #addr-container form {
