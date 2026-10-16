@@ -2080,7 +2080,7 @@ function copyPrivateKey() {
       text: "This operation will copy your private key to the clipboard. " +
          "Your private key is very important and anyone who has it will be able to spend from your account. " +
          "You should never share your private key with anyone. " +
-         "Type 'Yes' with capital 'Y' to copy your private key to the clipboard.",
+         "Type 'Yes' with capital 'Y' to copy your private key.",
       input: "text",
       confirmButtonText: "Copy",
       showCancelButton: true,

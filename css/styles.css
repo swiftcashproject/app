@@ -110,6 +110,32 @@ div[style*="display:flex"] {
   border-color: #3b82f6 !important;
 }
 
+/* 1. Custom Icon: No border / transparent */
+div:where(.swal2-icon) {
+  border-color: #16181e !important;
+}
+
+/* 2. Success Icon: Align border with the inner checkmark color */
+.swal2-popup .swal2-icon.swal2-success .swal2-success-ring {
+  border-color: #a5dc86 !important; 
+}
+
+/* 3. Error Icon: Align border with the inner cross color */
+.swal2-popup .swal2-icon.swal2-error {
+  border-color: #f27474 !important; 
+}
+
+/* 4. Info Icon: Align border with the inner symbol */
+.swal2-popup .swal2-icon.swal2-info {
+  border-color: #3fc3ee !important; 
+}
+
+/* 5. Question Icon: Align border with the inner symbol */
+.swal2-popup .swal2-icon.swal2-question {
+  border-color: #87adbd !important; 
+}
+
+
 /* ==========================================================
    CSS Fonts
    ========================================================== */
@@ -127,7 +153,7 @@ div[style*="display:flex"] {
    ========================================================== */
 :root {
    color-scheme: dark;
-   --sc-bg: #0b1220;
+   --sc-bg: #080a0e;
    --sc-panel: rgba(13, 22, 38, 0.94);
    --sc-panel-soft: rgba(21, 33, 53, 0.92);
    --sc-border: rgba(148, 163, 184, 0.22);
@@ -165,7 +191,7 @@ body {
    font-family: Oxanium, system-ui, sans-serif;
    font-weight: 500;
    background-color: var(--sc-bg);
-   background-image: linear-gradient(rgba(5, 10, 20, 0.58), rgba(5, 10, 20, 0.78));
+   background-image: linear-gradient(rgba((8, 10, 14, 0.58)), rgba(5, 6, 9, 0.78));
    background-position: center center;
    background-repeat: no-repeat;
    background-attachment: fixed;
