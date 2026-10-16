@@ -683,6 +683,7 @@ function sendBNB() {
       showCancelButton: true,
       confirmButtonText: "Send",
       cancelButtonText: "Cancel",
+      inputAutoFocus: false
 
       didOpen: function() {
 
@@ -1993,7 +1994,8 @@ function modifyTheChangeAddress() {
       text: "Custom Change Address:",
       input: "text",
       showCancelButton: true,
-      confirmButtonText: "Apply"
+      confirmButtonText: "Apply",
+      inputAutoFocus: false
    }).then((result) => {
       if (result.isConfirmed)
          try {
@@ -2018,7 +2020,8 @@ function changeTheFee() {
       text: "Custom Fee:",
       input: "text",
       showCancelButton: true,
-      confirmButtonText: "Apply"
+      confirmButtonText: "Apply",
+      inputAutoFocus: false
    }).then((result) => {
       if (result.isConfirmed) {
          var cFee = Number(result.value);
@@ -2090,6 +2093,7 @@ function copyPrivateKey() {
       input: "text",
       confirmButtonText: "Copy",
       showCancelButton: true,
+      inputAutoFocus: false
    }).then((result) => {
       if (result.isConfirmed) {
          if (result.value == 'Yes') {
