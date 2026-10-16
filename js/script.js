@@ -176,6 +176,20 @@ const WSWIFT_ABI = [
    "function approve(address,uint256) returns (bool)"
 ];
 
+const GAS_PRICE = 0.1; // Gwei
+
+const GAS_LIMIT = {
+    transfer: 43000,
+    deposit: 150000,
+    withdraw: 65000,
+    adjustInterest: 120000,
+    mintInterest: 70000
+};
+
+function estimateGasFee(transactionType) {
+    return GAS_LIMIT[transactionType] * GAS_PRICE / 1e9;
+}
+
 function getCustomErrorMessage(error) {
 
    try {
@@ -2348,7 +2362,8 @@ async function spendERC20() {
    if (!await confirmAction(
        "Confirm Transaction!",
        "Sending ~" + Number(amount).toLocaleString() + " " + CURRENT_COIN + " to:" +
-       "<br><br>" + shortAddress(toAddress)
+       "<br><br>" + shortAddress(toAddress) +
+       "<br><br>Gas: ~" + estimateGasFee("transfer") + " BNB",
    )) return;
    
    // Disable the elements in the form
@@ -2449,7 +2464,8 @@ async function deposit() {
    if (!await confirmAction(
        "Confirm Transaction!",
        "Depositing ~" + Number(amount).toLocaleString() + " SWIFT to:" +
-       "<br><br>" + "Non-Custodial SwiftCash Bank 🏦"
+       "<br><br>" + "Non-Custodial SwiftCash Bank 🏦" +
+       "<br><br>Gas: ~" + estimateGasFee("deposit") + " BNB",
    )) return false;
  
    $('#amount').prop("disabled", true);
@@ -2536,7 +2552,8 @@ async function withdraw() {
     if (!await confirmAction(
         "Confirm Transaction!",
         "Withdrawing ~" + Number(amount).toLocaleString() + " SWIFT from:" +
-        "<br><br>" + "Non-Custodial SwiftCash Bank 🏦"
+        "<br><br>" + "Non-Custodial SwiftCash Bank 🏦" +
+        "<br><br>Gas: ~" + estimateGasFee("withdraw") + " BNB",
     )) return false;
  
    $('#amount').prop("disabled", true);
@@ -2600,8 +2617,9 @@ async function mintInterest() {
    const result = await Swal.fire({
       icon: "question",
       title: "Mint Interest!",
-      text: "Accrued interest is automatically minted with every deposit and withdrawal. " +
-         "Are you sure you want to continue?",
+      html: "Accrued interest is automatically minted with every deposit and withdrawal. " +
+            "Are you sure you want to continue?" +
+            "<br><br>Gas: ~" + estimateGasFee("mintInterest") + " BNB",
       showCancelButton: true,
       confirmButtonText: "Yes",
       cancelButtonText: "Cancel"
@@ -2725,7 +2743,8 @@ async function adjustInterest(action) {
          if (!await confirmAction(
             "Confirm Transaction!",
             cText + " the interest rate by:" +
-            "<br><br>" + $('#address').val().substr(12)
+            "<br><br>" + $('#address').val().substr(12) +
+            "<br><br>Gas: ~" + estimateGasFee("adjustInterest") + " BNB",
          )) return;
 
          $('#submit').prop("disabled", true);
