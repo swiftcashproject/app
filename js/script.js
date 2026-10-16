@@ -683,7 +683,7 @@ function sendBNB() {
       showCancelButton: true,
       confirmButtonText: "Send",
       cancelButtonText: "Cancel",
-      inputAutoFocus: false
+      inputAutoFocus: false,
 
       didOpen: function() {
 
