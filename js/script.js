@@ -27,7 +27,7 @@ var PARAMS = {
       explorer: 'https://testnet.bscscan.com/',
       symbol: 'SWIFT',
       name: 'SwiftCash',
-      image: 'https://swiftcash.cc/brand/logo-64.png'
+      image: 'https://app.swiftcash.cc/icons/icon-512x512.png'
    },
 
    'BTC': {
@@ -1997,7 +1997,7 @@ function modifyTheChangeAddress() {
          try {
             PARAMS[CURRENT_COIN].coinjs.address.toOutputScript(result.value, PARAMS[CURRENT_COIN].network);
             changeAddress = result.value;
-            alertSuccess("New change address:\n", result.value);
+            alertSuccess("Change Address:\n", result.value);
          } catch (e) {
             alertError("Please enter a valid address!");
             return;
@@ -2013,7 +2013,7 @@ function changeTheFee() {
       icon: "question",
       inputValue: txFee,
       title: "Settings",
-      text: "Custom Fee:",
+      text: "Custom Transaction Fee:",
       input: "text",
       showCancelButton: true,
       confirmButtonText: "Apply",
@@ -2026,7 +2026,7 @@ function changeTheFee() {
             else if (cFee > maxFee) alertError("Maximum fee is " + maxFee + " " + CURRENT_COIN + "!");
             else {
                PARAMS[CURRENT_COIN].txFee = Number(cFee);
-               alertSuccess("Transaction fee will be:\n" + cFee + " " + CURRENT_COIN);
+               alertSuccess("Transaction Fee:", + cFee + " " + CURRENT_COIN);
             }
          } else {
             alertError("Please enter a valid fee!");

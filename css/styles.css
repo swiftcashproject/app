@@ -763,16 +763,16 @@ button {
    0% {
       transform: translateY(0) scale(1);
    }
-   45% {
-      transform: translateY(-7px) scale(1.2);
+
+   60% {
+      transform: translateY(-6px) scale(1.18);
    }
-   75% {
-      transform: translateY(-3px) scale(1.13);
-   }
+
    100% {
-      transform: translateY(-5px) scale(1.16);
+      transform: translateY(-4px) scale(1.15);
    }
 }
+
 
 @keyframes coin-glow {
    0%, 100% {
