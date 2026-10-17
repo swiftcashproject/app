@@ -2893,8 +2893,15 @@ function copyWholeBalance() {
 }
 
 jQuery(document).ready(function() {
+   Swal.fire({
+      icon: 'info',
+      title: 'SwiftCash Testnet',
+      text: 'This is a testnet run. SwiftCash is migrating to the BNB Smart Chain! A snapshot of the mainnet will be taken on the 25th of November 2026.',
+      confirmButtonText: 'Ok'
+   });
+
    // Warning - Terms of Use
-   if (Cookies.get('termsAccepted') == null) {
+   /*if (Cookies.get('termsAccepted') == null) {
       swal.fire({
          icon: "info",
          title: "Non-Custodial Wallet",
@@ -2916,7 +2923,7 @@ jQuery(document).ready(function() {
             window.location = "about:blank";
          }
       });
-   }
+   }*/
 
     // Private key login
     $('#privlogintoggle').click(function() {
