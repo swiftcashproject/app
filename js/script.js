@@ -1,4 +1,5 @@
 var CURRENT_COIN = 'SWIFT';
+var CURRENT_COIN_FLAG = false;
 var METAMASK_MODE = false;
 var WATCHONLY_MODE = false;
 var WATCHONLY_FLAG = false;
@@ -1401,10 +1402,12 @@ function hashit(hash, callback) {
 }
 
 function switchCoin(whichCoin) {
+   if(CURRENT_COIN_FLAG && whichCoin == CURRENT_COIN) return; 
+    
    if (METAMASK_MODE && !PARAMS[whichCoin].isERC20) {
       alertError(
          "Metamask Mode!",
-         "This coin isn't supported when you connect with Metamask! Log in with an email and password or with a private key."
+         "This coin is not supported when you connect with Metamask! Log in with an email and password or with a private key."
       );
       return;
    }
@@ -1421,6 +1424,7 @@ function switchCoin(whichCoin) {
 
    $("#addr-qr").attr("src", "./images/qrloader.gif");
    setTimeout(switchCoinNow, 100, whichCoin);
+   CURRENT_COIN_FLAG = true;
 }
 
 function switchCoinNow(whichCoin) {
@@ -1435,7 +1439,9 @@ function switchCoinNow(whichCoin) {
 
    if (!METAMASK_MODE && !WATCHONLY_MODE) {
       if (whichCoin != loginPrivkey) {
-         var d = new cc.bigi.fromBuffer(hashedPass);
+         // Old buggy way of logging in with a private key
+         //var d = new cc.bigi.fromBuffer(hashedPass); //Deprecated
+         var d = keyPair.d;
          keyPair = new PARAMS[CURRENT_COIN].coinjs.ECPair(d, null, {
             network: PARAMS[CURRENT_COIN].network
          });
@@ -2081,7 +2087,7 @@ function copyPrivateKey() {
    Swal.fire({
       icon: "question",
       inputValue: "No",
-      title: "Copy Private Key!",
+      title: "Copy Private Key",
       text: "This operation will copy your private key to the clipboard. " +
          "Your private key is very important and anyone who has it will be able to spend from your account. " +
          "You should never share your private key with anyone. " +
@@ -2229,7 +2235,7 @@ async function spendUTXO() {
    }
    
    if (!await confirmAction(
-       "Confirm Transaction!",
+       "Confirm Transaction",
        "Sending " + amount + " " + CURRENT_COIN + " to:" +
        "<br><br>" + shortAddress(toAddress)
    )) return;
@@ -2366,7 +2372,7 @@ async function spendERC20() {
    }
 
    if (!await confirmAction(
-       "Confirm Transaction!",
+       "Confirm Transaction",
        "Sending ~" + Number(amount).toLocaleString() + " " + CURRENT_COIN + " to:" +
        "<br><br>" + shortAddress(toAddress) +
        "<br><br>Gas: ~" + estimateGasFee("transfer") + " BNB",
@@ -2468,7 +2474,7 @@ async function deposit() {
    }
 
    if (!await confirmAction(
-       "Confirm Transaction!",
+       "Confirm Transaction",
        "Depositing ~" + Number(amount).toLocaleString() + " SWIFT to:" +
        "<br><br>" + "Non-Custodial SwiftCash Bank 🏦" +
        "<br><br>Gas: ~" + estimateGasFee("deposit") + " BNB",
@@ -2555,12 +2561,19 @@ async function withdraw() {
       return;
    }
 
-    if (!await confirmAction(
-        "Confirm Transaction!",
-        "Withdrawing ~" + Number(amount).toLocaleString() + " SWIFT from:" +
-        "<br><br>" + "Non-Custodial SwiftCash Bank 🏦" +
-        "<br><br>Gas: ~" + estimateGasFee("withdraw") + " BNB",
-    )) return false;
+   var withdrawalText = ""
+   if (tokenAmount === totalBalance) {
+       withdrawalText = "all your balance"
+   } else {
+       withdrawalText = "~" + Number(amount).toLocaleString() + " SWIFT";
+   }
+   
+   if (!await confirmAction(
+       "Confirm Transaction",
+       "Withdrawing " + withdrawalText + " from:" +
+       "<br><br>" + "Non-Custodial SwiftCash Bank 🏦" +
+       "<br><br>Gas: ~" + estimateGasFee("withdraw") + " BNB",
+   )) return false;
  
    $('#amount').prop("disabled", true);
    $('#submit').prop("disabled", true);
@@ -2622,7 +2635,7 @@ async function mintInterest() {
 
    const result = await Swal.fire({
       icon: "question",
-      title: "Mint Interest!",
+      title: "Mint Interest",
       html: "Accrued interest is automatically minted with every deposit and withdrawal. " +
             "Are you sure you want to continue?" +
             "<br><br>Gas: ~" + estimateGasFee("mintInterest") + " BNB",
@@ -2747,7 +2760,7 @@ async function adjustInterest(action) {
 
          const cText = action == "hike"? "Hiking": "Cutting";
          if (!await confirmAction(
-            "Confirm Transaction!",
+            "Confirm Transaction",
             cText + " the interest rate by:" +
             "<br><br>" + $('#address').val().substr(12) +
             "<br><br>Gas: ~" + estimateGasFee("adjustInterest") + " BNB",
@@ -2895,8 +2908,9 @@ function copyWholeBalance() {
 jQuery(document).ready(function() {
    Swal.fire({
       icon: 'info',
-      title: 'SwiftCash Testnet',
-      text: 'This is a testnet run. SwiftCash is migrating to the BNB Smart Chain! A snapshot of the mainnet will be taken on the 25th of November 2026.',
+      title: 'Testnet',
+      html: 'SwiftCash is migrating to the BNB Smart Chain! A snapshot of the mainnet will be taken on the 25th of November 2026.' +
+            '<br>This is a testnet run only.',
       confirmButtonText: 'Ok'
    });
 
