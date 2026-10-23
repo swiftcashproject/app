@@ -721,6 +721,8 @@ button {
 
 /* Currency logo */
 .currency-logo {
+   width: 53px;
+   padding: 2px;
    cursor: pointer;
    border-radius: 10px;
    transform: translateY(0) scale(1);
@@ -780,14 +782,14 @@ button {
 @keyframes coin-glow {
    0%, 100% {
       filter:
-         drop-shadow(0 0 4px rgba(80, 160, 255, 0.55))
-         drop-shadow(0 0 9px rgba(55, 130, 255, 0.2));
+         drop-shadow(0 0 6px rgba(80, 160, 255, 0.75))
+         drop-shadow(0 0 13px rgba(55, 130, 255, 0.35));
    }
 
    50% {
       filter:
-         drop-shadow(0 0 7px rgba(80, 160, 255, 0.85))
-         drop-shadow(0 0 15px rgba(55, 130, 255, 0.4));
+         drop-shadow(0 0 10px rgba(80, 160, 255, 1))
+         drop-shadow(0 0 20px rgba(55, 130, 255, 0.6));
    }
 }
 
