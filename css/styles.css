@@ -483,8 +483,8 @@ button {
    padding: 5px;
    margin: 2px 1px;
    border-radius: 4px;
-   background-color: #245b4b !important;
-   border-color: #34745f !important;
+   background-color: #334155 !important;
+   border-color: #475569 !important;
 }
 
 .bnb {
@@ -493,8 +493,9 @@ button {
    padding: 5px;
    margin: 2px 1px;
    border-radius: 4px;
-   background-color: #785f20 !important;
-   border-color: #9a7b2b !important;
+   background-color: #242424 !important;
+   border-color: #4b3902 !important;
+   color: #F0B90B !important;
 }
 
 .claim:hover,
@@ -505,14 +506,15 @@ button {
 
 .staked:hover,
 .staked:focus {
-   background-color: #194638 !important;
-   border-color: #2b624f !important;
+   background-color: #263445 !important;
+   border-color: #3b4b60 !important;
 }
 
 .bnb:hover,
 .bnb:focus {
-   background-color: #5d4918 !important;
-   border-color: #80651f !important;
+   background-color: #151515 !important;
+   border-color: #68500a !important;
+   color: #F0B90B !important;
 }
 
 .progress-bar {
@@ -570,7 +572,6 @@ button {
    border: 1px solid rgba(255, 255, 255, 0.08);
    border-radius: 4px;
    color: #eaf2ff;
-   background: #263a55;
    font-size: 12px !important;
    overflow-wrap: anywhere;
 }
@@ -582,8 +583,8 @@ button {
 }
 
 #addr-stakedbalance {
-   background-color: #245b4b !important;
-   border-color: #34745f !important;
+   background-color: #334155 !important;
+   border-color: #475569 !important;
 }
 
 #addr-wswiftbalance,
@@ -593,8 +594,9 @@ button {
 }
 
 #addr-bnbBalance {
-   background-color: #785f20 !important;
-   border-color: #9a7b2b !important;
+   background-color: #242424 !important;
+   border-color: #4b3902 !important;
+   color: #F0B90B !important;
 }
 
 #addr-receive {
