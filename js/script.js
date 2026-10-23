@@ -28,7 +28,25 @@ var PARAMS = {
       explorer: 'https://testnet.bscscan.com/',
       symbol: 'SWIFT',
       name: 'SwiftCash',
-      image: 'https://app.swiftcash.cc/icons/icon-512x512.png'
+      image: 'https://app.swiftcash.cc/images/swiftcsh.png'
+   },
+   
+   'USDT': {
+      isERC20: true,
+      blockchain: 'BNB',
+      coingecko: 'tether',
+      coinjs: cc.bitcoin,
+      network: cc.bitcoin.networks.swiftcash,
+      precision: 2,
+      qrColor: '2A8E6F',
+      contract: '0x337610d27c682E347C9cD60BD4b3b107C9d34dDd',
+      rpc: 'https://data-seed-prebsc-1-s1.bnbchain.org:8545',
+      chainId: 97,
+      decimals: 18,
+      explorer: 'https://testnet.bscscan.com/',
+      symbol: 'USDT',
+      name: 'Tether',
+      image: 'https://app.swiftcash.cc/images/Tether.png'
    },
 
    'BTC': {
@@ -89,29 +107,6 @@ var PARAMS = {
       explorer: 'https://live.blockcypher.com/doge/',
       unspentApi: 'https://api.blockcypher.com/v1/doge/main/addrs/',
       sendApi: 'https://api.blockchair.com/dogecoin/push/transaction',
-      sendTxHex: 'data',
-      sendTxid1: 'data',
-      sendTxid2: 'transaction_hash',
-      unspentArray1: 'txrefs',
-      unspentTxid: 'tx_hash',
-      unspentOutput: 'tx_output_n',
-      unspentValue: 'value',
-      unspentDivision: 100000000
-   },
-
-   'DASH': {
-      blockchain: 'Digital Cash',
-      coingecko: 'dash',
-      coinjs: cc.bitcoin,
-      network: cc.bitcoin.networks.dash,
-      qrColor: '292929',
-      minFee: 0.0001,
-      maxFee: 0.1,
-      txFee: 0.001,
-      precision: 3,
-      explorer: 'https://live.blockcypher.com/dash/',
-      unspentApi: 'https://api.blockcypher.com/v1/dash/main/addrs/',
-      sendApi: 'https://api.blockchair.com/dash/push/transaction',
       sendTxHex: 'data',
       sendTxid1: 'data',
       sendTxid2: 'transaction_hash',
@@ -1462,10 +1457,20 @@ function switchCoinNow(whichCoin) {
 
    $("#address").attr("placeholder", whichCoin + " address");
 
-   if (whichCoin == "SWIFT") {
+   if (PARAMS[whichCoin].isERC20) {
        
-      if(!WATCHONLY_MODE) { 
+      if(!WATCHONLY_MODE && whichCoin == 'SWIFT') { 
         $('#mainD, #mainW, #mainH, #mainC').removeAttr('disabled');
+      } else {
+        $('#mainD, #mainW, #mainH, #mainC').attr('disabled', 'disabled');
+      }
+      
+      if(whichCoin == 'SWIFT') {
+        $("#divStakedBalance").show();
+        $("#gas-topup").show();
+      } else {
+        $("#divStakedBalance").hide();
+        $("#gas-topup").hide();
       }
 
       $("#buy-gas").show();

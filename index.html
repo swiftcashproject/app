@@ -130,15 +130,16 @@
 
                                         <div class="coin-subtitle"
                                             aria-label="Supported coins">
-                                            <span class="coin-name">BNB</span>
+                                            <span
+                                                class="coin-name">BNB</span>
+                                            <span
+                                                class="coin-name">USDT</span>
                                             <span
                                                 class="coin-name">Bitcoin</span>
                                             <span
                                                 class="coin-name">Litecoin</span>
-                                            <span
-                                                class="coin-name">Dogecoin</span>
                                             <span 
-                                                class="coin-name">Dash</span>
+                                                class="coin-name">Dogecoin</span>
                                         </div>
 
                                     </div>
@@ -214,6 +215,12 @@
                                             src="./images/swiftcash.png"
                                             class="img-responsive" alt="" /></a>
                                 </div>
+                                <div title="Tether" data-coin="USDT" class="col-md-3 currency-logo"
+                                    style="padding: 2px; width: 53px;"><a
+                                        href="javascript:switchCoin('USDT');"><img
+                                            src="./images/tether.png"
+                                            class="img-responsive" alt="" /></a>
+                                </div>
                                 <div title="Bitcoin" data-coin="BTC" class="col-md-3 currency-logo"
                                     style="padding: 2px; width: 53px;"><a
                                         href="javascript:switchCoin('BTC');"><img
@@ -230,12 +237,6 @@
                                     style="padding: 2px; width: 53px;"><a
                                         href="javascript:switchCoin('DOGE');"><img
                                             src="./images/dogecoin.png"
-                                            class="img-responsive" alt="" /></a>
-                                </div>
-                                <div title="Dash" data-coin="DASH" class="col-md-3 currency-logo"
-                                    style="padding: 2px; width: 53px;"><a
-                                        href="javascript:switchCoin('DASH');"><img
-                                            src="./images/dash.png"
                                             class="img-responsive" alt="" /></a>
                                 </div>
                             </div>
@@ -320,11 +321,11 @@
                                             Balance:
                                             0.00 wSWIFT</a>
                                         <button
-                                            title="Migrate from wSWIFT to SWIFT"
+                                            title="Unlock your wSWIFT balance"
                                             id="claim-wrapped" type="button"
                                             class="btn btn-primary claim"
                                             onclick="claimWrapped();">
-                                            <i class="fa fa-money-bill-transfer"
+                                            <i class="fa fa-unlock-keyhole"
                                                 style="width: 18px;"></i>
                                         </button>
                                     </div>
@@ -342,11 +343,11 @@
                                             <i class="fa fa-forward-step"></i>
                                         </button>
                                         <button
-                                            title="Migrate from LSWIFT to SWIFT"
+                                            title="Unlock your LSWIFT balance"
                                             id="claim-native" type="button"
                                             class="btn btn-primary claim"
                                             onclick="claimNative();">
-                                            <i class="fa fa-money-bill-transfer"
+                                            <i class="fa fa-unlock-keyhole"
                                                 style="width: 18px;"></i>
                                         </button>
                                     </div>
@@ -361,7 +362,7 @@
                                             class="btn btn-primary bnb"
                                             onclick="sendBNB();">
                                             <i
-                                                class="fa fa-share-from-square"></i>
+                                                class="fa fa-money-bill-transfer"></i>
                                         </button>
                                         <button
                                             title="Gas top-up request with SWIFT"
@@ -436,7 +437,7 @@
                                                 onchange="rsvs(this.value);"
                                                 type="radio">
                                             <i
-                                                class="main-button fa fa-share-from-square"></i>
+                                                class="main-button fa fa-money-bill-transfer"></i>
                                         </label>
                                         <label id="mainD" title="Deposit"
                                             style="font-weight: bold;"
