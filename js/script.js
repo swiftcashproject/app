@@ -2165,7 +2165,7 @@ function rsvs(rval) {
          $("#submit").html("DEPOSIT");
          $("#addr-spend").show();
          $("#addr-receive").hide();
-         $("#address").val('Non-Custodial SwiftCash Bank 🏦');
+         $("#address").val('Non-Custodial SwiftCash Bank 🏛️');
          $("#address").attr("disabled", "disabled");
          $("#camera").attr("disabled", "disabled");
 
@@ -2178,7 +2178,7 @@ function rsvs(rval) {
          $("#submit").html("WITHDRAW");
          $("#addr-spend").show();
          $("#addr-receive").hide();
-         $("#address").val('Non-Custodial SwiftCash Bank 🏦');
+         $("#address").val('Non-Custodial SwiftCash Bank 🏛️');
          $("#address").attr("disabled", "disabled");
          $("#camera").attr("disabled", "disabled");
 
