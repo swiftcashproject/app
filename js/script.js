@@ -7,7 +7,7 @@ var WATCHONLY_FLAG = false;
 var PARAMS = {
    'SWIFT': {
       isERC20: true,
-      blockchain: 'BNB',
+      blockchain: 'BNB Chain',
       coingecko: 'swiftcash',
       coinjs: cc.bitcoin,
       network: cc.bitcoin.networks.swiftcash,
@@ -33,7 +33,7 @@ var PARAMS = {
    
    'USDT': {
       isERC20: true,
-      blockchain: 'BNB',
+      blockchain: 'BNB Chain',
       coingecko: 'tether',
       coinjs: cc.bitcoin,
       network: cc.bitcoin.networks.swiftcash,
@@ -1455,8 +1455,6 @@ function switchCoinNow(whichCoin) {
       }
    }
 
-   $("#address").attr("placeholder", whichCoin + " address");
-
    if (PARAMS[whichCoin].isERC20) {
        
       if(!WATCHONLY_MODE && whichCoin == 'SWIFT') { 
@@ -2481,7 +2479,7 @@ async function deposit() {
    if (!await confirmAction(
        "Confirm Transaction",
        "Depositing ~" + Number(amount).toLocaleString() + " SWIFT to:" +
-       "<br><br>" + "Non-Custodial SwiftCash Bank 🏦" +
+       "<br><br>" + "Non-Custodial SwiftCash Bank 🏛️" +
        "<br><br>Gas: ~" + estimateGasFee("deposit") + " BNB",
    )) return false;
  
@@ -2576,7 +2574,7 @@ async function withdraw() {
    if (!await confirmAction(
        "Confirm Transaction",
        "Withdrawing " + withdrawalText + " from:" +
-       "<br><br>" + "Non-Custodial SwiftCash Bank 🏦" +
+       "<br><br>" + "Non-Custodial SwiftCash Bank 🏛️" +
        "<br><br>Gas: ~" + estimateGasFee("withdraw") + " BNB",
    )) return false;
  

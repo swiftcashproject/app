@@ -736,10 +736,10 @@ button {
    object-fit: contain;
 }
 
-/* Hover: fast pop and bounce */
+/* Hover: fast pop and bounce in place */
 .currency-logo:hover {
    animation: coin-pop 0.38s cubic-bezier(0.2, 1.6, 0.4, 1);
-   transform: translateY(-5px) scale(1.16);
+   transform: scale(1.25);
    filter: drop-shadow(0 0 10px rgba(80, 160, 255, 0.9));
 }
 
@@ -749,33 +749,34 @@ button {
       drop-shadow(0 0 6px rgba(80, 160, 255, 0.8))
       drop-shadow(0 0 13px rgba(55, 130, 255, 0.4));
    animation: coin-glow 2.5s ease-in-out infinite;
+   transform: scale(1.20);
 }
 
-/* Selected + hover: brighter glow and same bounce */
+/* Selected + hover: brighter glow and same pop */
 .currency-logo.selected:hover {
    animation: coin-pop 0.38s cubic-bezier(0.2, 1.6, 0.4, 1);
-   transform: translateY(-5px) scale(1.16);
+   transform: scale(1.25);
    filter:
       drop-shadow(0 0 10px rgba(80, 160, 255, 1))
       drop-shadow(0 0 18px rgba(55, 130, 255, 0.55));
 }
 
-/* Quick pop-and-bounce animation */
+/* Quick pop-and-bounce animation in place */
 @keyframes coin-pop {
    0% {
-      transform: translateY(0) scale(1);
+      transform: scale(1);
    }
 
    60% {
-      transform: translateY(-6px) scale(1.18);
+      transform: scale(1.35);
    }
 
    100% {
-      transform: translateY(-4px) scale(1.15);
+      transform: scale(1.25);
    }
 }
 
-
+/* Selected: pulsing blue glow */
 @keyframes coin-glow {
    0%, 100% {
       filter:
