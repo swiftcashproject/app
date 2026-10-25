@@ -2007,7 +2007,7 @@ function modifyTheChangeAddress() {
             changeAddress = result.value;
             alertSuccess("Change Address:\n", result.value);
          } catch (e) {
-            alertError("Please enter a valid address!");
+            alertError("Invalid address!", "Please enter a valid " + CURRENT_COIN + " address.");
             return;
          }
    });
@@ -2030,14 +2030,14 @@ function changeTheFee() {
       if (result.isConfirmed) {
          var cFee = Number(result.value);
          if (!isNaN(cFee)) {
-            if (cFee < minFee) alertError("Minimum fee is " + minFee + " " + CURRENT_COIN + "!");
+            if (cFee < minFee) alertError("Invalid fee!", "Minimum transaction fee is " + minFee + " " + CURRENT_COIN + ".");
             else if (cFee > maxFee) alertError("Maximum fee is " + maxFee + " " + CURRENT_COIN + "!");
             else {
                PARAMS[CURRENT_COIN].txFee = Number(cFee);
                alertSuccess("Transaction Fee:", + cFee + " " + CURRENT_COIN);
             }
          } else {
-            alertError("Please enter a valid fee!");
+            alertError("Invalid fee!", "Please enter a valid transaction fee.");
          }
       }
    });
