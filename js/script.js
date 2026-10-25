@@ -54,10 +54,10 @@ var PARAMS = {
       coingecko: 'bitcoin',
       coinjs: cc.bitcoin,
       qrColor: 'FC8F43',
-      minFee: 0.00001,
-      maxFee: 0.01,
-      txFee: 0.0001,
-      precision: 4,
+      minFee: 0.000001,
+      maxFee: 0.001,
+      txFee: 0.00001,
+      precision: 5,
       explorer: 'https://live.blockcypher.com/btc/',
       unspentApi: 'https://api.blockcypher.com/v1/btc/main/addrs/',
       sendApi: 'https://api.blockchair.com/bitcoin/push/transaction',
@@ -77,10 +77,10 @@ var PARAMS = {
       coinjs: cc.bitcoin,
       network: cc.bitcoin.networks.litecoin,
       qrColor: '5C5C5C',
-      minFee: 0.0001,
-      maxFee: 0.1,
-      txFee: 0.001,
-      precision: 3,
+      minFee: 0.000001,
+      maxFee: 0.01,
+      txFee: 0.00001,
+      precision: 4,
       explorer: 'https://live.blockcypher.com/ltc/',
       unspentApi: 'https://api.blockcypher.com/v1/ltc/main/addrs/',
       sendApi: 'https://api.blockchair.com/litecoin/push/transaction',
@@ -100,9 +100,9 @@ var PARAMS = {
       coinjs: cc.bitcoin,
       network: cc.bitcoin.networks.dogecoin,
       qrColor: 'C19347',
-      minFee: 0.01,
-      maxFee: 100,
-      txFee: 1,
+      minFee: 0.001,
+      maxFee: 1,
+      txFee: 0.01,
       precision: 0,
       explorer: 'https://live.blockcypher.com/doge/',
       unspentApi: 'https://api.blockcypher.com/v1/doge/main/addrs/',
@@ -1464,7 +1464,6 @@ function switchCoinNow(whichCoin) {
       }
       
       if(whichCoin == 'SWIFT') {
-        $("#divStakedBalance").show();
         $("#gas-topup").show();
       } else {
         $("#divStakedBalance").hide();
@@ -1903,9 +1902,9 @@ function refreshStakedBalance() {
          accruedInterest = results[1];
 
          if (stakedBalance > 0) {
-            $("#divStakedBalance").css("display", "block");
+            $("#divStakedBalance").show();
          } else {
-            $("#divStakedBalance").css("display", "none");
+            $("#divStakedBalance").hide();
          }
 
          var stakeText =
