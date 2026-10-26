@@ -2474,6 +2474,11 @@ async function deposit() {
       );
       return;
    }
+   
+   if (tokenAmount == balance) {
+      // Leave 1n in the balance to keep the address under "holders"
+      tokenAmount = tokenAmount - 1n;
+   }
 
    if (!await confirmAction(
        "Confirm Transaction",
