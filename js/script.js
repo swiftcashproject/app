@@ -1763,7 +1763,6 @@ function loadAddress() {
    $("#addr-qr").attr("src", getAddressQR());
    $("#addr-qr").attr("alt", address);
    $("#addr-id-clipboard").attr("data-clipboard-text", address);
-   $("#addr-id-clipboard").attr("title", "Copy address");
    $("#addr-id").attr("href", PARAMS[CURRENT_COIN].explorer + "address/" + address);
    $("#addr-id").html(address);
    changeAddress = address;
@@ -2239,7 +2238,8 @@ async function spendUTXO() {
    if (!await confirmAction(
        "Confirm Transaction",
        "Sending " + amount + " " + CURRENT_COIN + " to:" +
-       "<br><br>" + shortAddress(toAddress)
+       "<br><br>" + shortAddress(toAddress) +
+       "<br><br>Fee: ~" + FEE + " " + CURRENT_COIN,
    )) return;
 
    $('#address').prop("disabled", true);
@@ -2892,6 +2892,13 @@ function copyWholeBalance() {
             PARAMS[CURRENT_COIN].decimals
          )
       );
+      return;
+   }
+   
+   if (CURRENT_COIN === 'SWIFT' && isDepositing) {
+      if (balance == 1n) {
+        $('#amount').val("0.0");
+      }
       return;
    }
 

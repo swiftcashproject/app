@@ -175,7 +175,7 @@
                                 <button id="signin" type="submit" name="go"
                                     class="btnMain btn btn-lg btn-primary btn-block">LOGIN🔏</button>
                                 <button id="privlogintoggle"
-                                    title="Login with a private key"
+                                    title="Login with a Private Key"
                                     type="button"
                                     style="font-weight: bold; font-size: 4em; padding: 0px;"
                                     class="btn btn-primary" data-toggle="button"
@@ -241,7 +241,7 @@
                                     <a href="" target="_blank"
                                         style="font-size: 1.0em;"
                                         id="addr-id">SWIFTADDRESS</a>
-                                    <button id="addr-id-clipboard" type="button"
+                                    <button id="addr-id-clipboard" title ="Copy Address" type="button"
                                         class="btn btn-primary clipboard"
                                         data-clipboard-text="SWIFTADDRESS">
                                         <i class="fa fa-copy"></i>
@@ -252,21 +252,21 @@
                                             id="addr-balance"
                                             style="vertical-align: middle; font-size: 11.8px; padding: 4.3px;">Balance:
                                             0.00000000 SWIFT</a>
-                                        <button title="Refresh balance"
+                                        <button title="Refresh Balance"
                                             id="addr-balance-refresh"
                                             type="button"
                                             class="btn btn-primary refresh"
                                             onclick="javascript:loadAddress();">
                                             <i class="fa fa-bolt-lightning"></i>
                                         </button>
-                                        <button title="Copy private key"
+                                        <button title="Copy Private Key"
                                             id="privatekey-copy" type="button"
                                             class="btn btn-primary privkey"
                                             data-placement="bottom"
                                             onclick="javascript:copyPrivateKey();">
                                             <i class="fa fa-key"></i>
                                         </button>
-                                        <button title="Custom change address"
+                                        <button title="Custom Change Address"
                                             id="changeaddress-modify"
                                             type="button"
                                             class="btn btn-primary changeaddress"
@@ -274,7 +274,7 @@
                                             onclick="javascript:modifyTheChangeAddress();">
                                             <i class="fa fa-wallet""></i>
                               </button>
-                              <button title=" Custom fee" id="custom-fee"
+                              <button title="Custom Transaction Fee" id="custom-fee"
                                                 type="button"
                                                 class="btn btn-primary customfee"
                                                 onclick="changeTheFee();">
@@ -295,13 +295,13 @@
                                             style="vertical-align: middle; font-size: 11.8px; padding: 4.3px;">Staked:
                                             0.00 SWIFT</a>
                                         <button
-                                            title="Mint the accrued interest"
+                                            title="Mint the Accrued Interest"
                                             id="mint-interest" type="button"
                                             class="btn btn-primary staked"
                                             onclick="mintInterest();">
                                             <i class="fa fa-chart-line"></i>
                                         </button>
-                                        <button title="Unlock your stake"
+                                        <button title="Unlock Your Stake"
                                             id="unlock-stake" type="button"
                                             class="btn btn-primary staked"
                                             onclick="$('#mainW').click();">
@@ -316,7 +316,7 @@
                                             Balance:
                                             0.00 wSWIFT</a>
                                         <button
-                                            title="Unlock your wSWIFT balance"
+                                            title="Claim Your wSWIFT"
                                             id="claim-wrapped" type="button"
                                             class="btn btn-primary claim"
                                             onclick="claimWrapped();">
@@ -331,14 +331,14 @@
                                             style="vertical-align: middle; font-size: 11.8px; padding: 4.3px;">Legacy
                                             Balance:
                                             0.00 LSWIFT</a>
-                                        <button title="Show next"
+                                        <button title="Show Next"
                                             id="legacy-next" type="button"
                                             class="btn btn-primary claim"
                                             onclick="nextLegacy();">
                                             <i class="fa fa-forward-step"></i>
                                         </button>
                                         <button
-                                            title="Unlock your LSWIFT balance"
+                                            title="Claim Your LSWIFT"
                                             id="claim-native" type="button"
                                             class="btn btn-primary claim"
                                             onclick="claimNative();">
@@ -360,7 +360,7 @@
                                                 class="fa fa-money-bill-transfer"></i>
                                         </button>
                                         <button
-                                            title="Gas top-up request with SWIFT"
+                                            title="Gas Top-Up Request with SWIFT"
                                             id="gas-topup" type="button"
                                             class="btn btn-primary bnb"
                                             onclick="gasTopup();">
