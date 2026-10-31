@@ -2898,8 +2898,8 @@ function copyWholeBalance() {
    if (CURRENT_COIN === 'SWIFT' && isDepositing) {
       if (balance == 1n) {
         $('#amount').val("0.0");
+        return;
       }
-      return;
    }
 
    if (PARAMS[CURRENT_COIN].isERC20) {
